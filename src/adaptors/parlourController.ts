@@ -1,0 +1,88 @@
+import {Request,Response
+} from "express"
+import ParlourUseCase from "../use_case/parlourUseCase"
+
+
+class parlourController{
+    private parlourcase : ParlourUseCase
+    constructor(parlourcase : ParlourUseCase){
+        this.parlourcase = parlourcase
+    }
+
+
+
+    //email verifying
+    async verifyEmail(req:Request,res:Response){
+        console.log('controller')
+        try {
+            const {email,password,name} = req.body;
+            const vendorData:any = await this.parlourcase.findVendor(name,email,password)
+            console.log(vendorData);
+
+            if(!vendorData.data.data){
+                req.app.locals.vendor = {email,name,password}
+                req.app.locals.otp = vendorData?.data?.otp;
+                console.log('kdfhoiafhoah',req.app.locals);
+                res.status(409).json(vendorData?.data)
+                
+            }else{
+                res.status(409).json({data:true});
+            }
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+    //verfiying otp
+    async verifyOtp(req:Request,res:Response){
+        try {
+            console.log('thenga');
+            
+            const otpBody:string = req.body.otp;
+            const otpSaved:string = req.app.locals.otp;
+            console.log(otpBody,otpSaved);
+            
+            if(otpBody === otpSaved){
+                const vendor = req.app.locals.vendor;
+                const save = await this.parlourcase.saveVendor(vendor)
+                if(save){
+                    console.log('sadfas');
+                    return res.status(save.status).json(save)
+                }else{
+                    return res.status(400).json({message:"invalid otp"})
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    //vendor login
+    async vendorLogin(req:Request,res:Response){
+        try {
+            console.log('vendor controller');
+            const vendor = await this.parlourcase.parlourLogin(req.body)
+            if(vendor && vendor.data && typeof vendor.data ==='object' && 'token' in vendor.data){
+                res.cookie('vendorJWT',vendor.data.token,{
+                    httpOnly: true,
+                    secure: process.env.Node_ENV !== 'development',
+                    sameSite: 'strict',
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                });
+            }
+
+            res.status(vendor!.status).json(vendor!.data)
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+}
+
+
+export default parlourController
