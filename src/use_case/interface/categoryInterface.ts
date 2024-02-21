@@ -2,7 +2,7 @@ import Category from "../../domain/category";
 
 
 interface CategoryRepository{
-saveCategory(category:Category):Promise<any>,
+saveCategory(category:string,image:string):Promise<any>,
 }
 
 export default CategoryRepository

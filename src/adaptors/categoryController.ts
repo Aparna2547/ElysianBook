@@ -24,12 +24,13 @@ class categoryController{
     //add category
     async addCategory(req:Request,res:Response){
         try {
-            console.log('heklo');
+            console.log('heklo',req.file);
+            const image = req.file as object
             
-            const {catName} = req.body
-            console.log(catName);
-            const category = await this.catergorycase.addCat(req.body)
-            res.status(200).json(category)
+            const category = req.body.category
+            // console.log(catName);
+            const categoryStatus = await this.catergorycase.addCat(category,image)
+            res.status(200).json(categoryStatus)
             
         } catch (error) {
             console.log(error);

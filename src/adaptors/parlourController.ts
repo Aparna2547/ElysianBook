@@ -17,16 +17,16 @@ class parlourController{
         try {
             const {email,password,name} = req.body;
             const vendorData:any = await this.parlourcase.findVendor(name,email,password)
-            console.log(vendorData);
+            console.log('hh',vendorData);
 
             if(!vendorData.data.data){
                 req.app.locals.vendor = {email,name,password}
                 req.app.locals.otp = vendorData?.data?.otp;
                 console.log('kdfhoiafhoah',req.app.locals);
-                res.status(409).json(vendorData?.data)
+                res.status(200).json(vendorData?.data)
                 
             }else{
-                res.status(409).json({data:true});
+                res.status(200).json({data:true});
             }
             
         } catch (error) {
@@ -42,17 +42,18 @@ class parlourController{
             console.log('thenga');
             
             const otpBody:string = req.body.otp;
-            const otpSaved:string = req.app.locals.otp;
-            console.log(otpBody,otpSaved);
+            const otpSaved:string = req.app.locals.otp
+            console.log("optsa",otpBody,otpSaved);
             
             if(otpBody === otpSaved){
                 const vendor = req.app.locals.vendor;
+                console.log(vendor)
                 const save = await this.parlourcase.saveVendor(vendor)
                 if(save){
                     console.log('sadfas');
                     return res.status(save.status).json(save)
                 }else{
-                    return res.status(400).json({message:"invalid otp"})
+                    return res.status(200).json({message:"invalid otp"})
                 }
             }
         } catch (error) {

@@ -74,6 +74,40 @@ class Userusecase{
 
 
 
+//in the case of forgot password
+    async findUserByMail(email: string) {
+        // console.log(email);
+        
+        console.log('inside usecase');
+        const userFound = await this.userRepository.findByEmail(email);
+        // console.log(userFound,'userfound')
+        if (userFound) {
+             const otp = await this.otpGen.genOtp(4);
+            console.log(otp, 'otp');
+            const mailDetails = await this.sendOtp.forgotSendMail(email, otp);
+            // console.log('mail details:', mailDetails);
+    
+            console.log('user found');
+            return {
+                status: 200,
+                data: {
+                    data: false,
+                    otp: otp
+
+                }
+            };
+        } else {
+           
+            return {
+                status: 200,
+                data: {
+                    data: true,
+                }
+            };
+        }
+    }
+    
+
     //login user
     
     async logIn(user: any) {

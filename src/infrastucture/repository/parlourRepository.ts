@@ -20,6 +20,11 @@ class parlourRepository implements ParlourRepository{
         }
         
     }
+
+    async findVenorById(user: string) {
+        const userFound = await ParlourModel.findById(user)
+        return userFound
+    }
 }
 
 

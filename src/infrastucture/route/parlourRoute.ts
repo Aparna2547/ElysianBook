@@ -19,8 +19,8 @@ const controller = new parlourController(usecase)
 
 const router  = express.Router()
 
-router.post('/api/parlours/signup',(req,res)=>controller.verifyEmail(req,res))
-router.post('/api/parlours/verifyotp',(req,res)=>controller.verifyOtp(req,res))
-router.post('/api/parlours/login',(req,res)=>controller.vendorLogin(req,res))
+router.post('/signup',(req,res)=>controller.verifyEmail(req,res))
+router.post('/verifyOtp',(req,res)=>controller.verifyOtp(req,res))
+router.post('/login',(req,res)=>controller.vendorLogin(req,res))
 
 export default router

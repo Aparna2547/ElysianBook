@@ -2,17 +2,20 @@ import { errorMonitor } from "nodemailer/lib/xoauth2";
 import Category from "../domain/category";
 import categoryRepository from "../infrastucture/repository/categoryRepository";
 import { CategoryModel } from "../infrastucture/database/CategoryModel";
+import Cloudinary from "../infrastucture/utils/cloudinary";
 
 class Categoryusecase{
     private categoryRepository :categoryRepository
+    private cloudinary : Cloudinary
 
 
-    constructor(categoryRepository:categoryRepository){
+    constructor(categoryRepository:categoryRepository,cloudinary:Cloudinary){
         this.categoryRepository = categoryRepository
+        this.cloudinary = cloudinary
     }
 
 
-    //all categiry
+    //all category
     async getCategory(){
         try {
             const category = await this.categoryRepository.getCat()
@@ -26,22 +29,25 @@ class Categoryusecase{
         }
     }
     //add category
-        async addCat(category:any){
+        async addCat(category:string,image:object){
             try {
-                const catFound = await this.categoryRepository.findCategory(category.catName)
+                const catFound = await this.categoryRepository.findCategory(category)
                 if(catFound){
                     console.log('already exist');
 
                     return{
                         status:200,
-                        data:{
-                            data:true
-                        }
+                        data:false
                     }
                     
                     
                 }else{
-                    const catSave = await this.categoryRepository.saveCategory(category)
+                    //cloudinary
+                    const imageLink = await this.cloudinary.saveToCloudinary(image)
+                    console.log(imageLink);
+                    
+
+                    const catSave = await this.categoryRepository.saveCategory(category,imageLink)
                     return{
                         status:200,
                         data:catSave

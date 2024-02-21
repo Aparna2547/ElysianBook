@@ -39,7 +39,7 @@
             try {
                 const otpBody: string = req.body.otp;
                 const otpSaved: string = req.app.locals.otp;
-                console.log(otpBody,otpSaved)
+                console.log('jkjk',otpBody,otpSaved)
                 if (otpBody === otpSaved) {
                     const user = req.app.locals.user;
                     const save = await this.usercase.saveUser(user);
@@ -81,7 +81,48 @@
                 console.log(error);
             }
         }
-        
+
+    //forgot password
+    async forgotPasswordEmail(req:Request,res:Response){
+        try {
+            console.log('inside controller');
+            const email = req.body.email;
+            // console.log(email,'email in controller')
+            const userData:any = await this.usercase.findUserByMail( email);
+
+            // console.log('userdata',userData.data);
+            if(userData.data.data){
+             req.app.locals.user  ={email}
+             req.app.locals.otp = userData?.data?.otp
+             res.status(201).json({data:true})
+            }else{
+                res.status(200).json({data:false})
+            }
+            
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+            
+            //user logout
+            async logout(req:Request,res:Response){
+                try {
+                    res.cookie('userJWT', '', {
+                        httpOnly: true,
+                        expires: new Date(0)
+                    })
+                    res.status(200).json({success:true})
+                    
+                } catch (error) {
+                    console.log(error);
+                    
+                }
+            }
+            
     }
 
 

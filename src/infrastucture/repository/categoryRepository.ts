@@ -31,8 +31,8 @@ class categoryRepository implements CategoryRepository{
         
     }
     // save category
-    async saveCategory(category:Category){
-        const newCategory = new CategoryModel(category)
+    async saveCategory(catName:string,image:string){
+        const newCategory = new CategoryModel({catName,image})
         await newCategory.save()
         return newCategory
     }
