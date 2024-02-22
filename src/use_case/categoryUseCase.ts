@@ -103,7 +103,7 @@ class Categoryusecase{
                 
         //     }
         // }
-        async hideCat(id: string) {
+        async  hideCat(id: string) {
            try {
             console.log('usecase',id)
             const catStatus = await this.categoryRepository.hideCat(id)

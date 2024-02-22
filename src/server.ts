@@ -9,7 +9,7 @@ const startServer = async ()=>{
         await connetDb()
 
         const app = createServer()
-        app?.listen(5000,()=>{
+        app?.listen(3000,()=>{
             console.log('connected to the server');
         })
     } catch (error) {

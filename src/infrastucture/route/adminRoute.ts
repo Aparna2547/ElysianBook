@@ -39,10 +39,10 @@ const catusecase = new categoryusecase(catrepository,cloudinary)
 const catcontroller = new categoryController(catusecase)
 
 
-router.get('/api/admin/category',(req,res)=>catcontroller.getCategory(req,res))
+router.get('/category',(req,res)=>catcontroller.getCategory(req,res))
 router.post('/addcategory',multerMid.single('image'),(req,res)=>catcontroller.addCategory(req,res))
-router.put('/api/admin/editcategory/:id',multerMid.single('image'),(req,res)=>catcontroller.editCategory(req,res))
-router.post('/api/admin/hidecategory/:id',(req,res)=>catcontroller.hideCategory(req,res))
+router.put('/editcategory',multerMid.single('image'),(req,res)=>catcontroller.editCategory(req,res))
+router.put('/hidecategory',(req,res)=>catcontroller.hideCategory(req,res))
 
 
 
