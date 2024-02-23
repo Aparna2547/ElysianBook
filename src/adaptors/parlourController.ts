@@ -62,6 +62,21 @@ class parlourController{
         }
     }
 
+    //google isgnup
+    async gsignup (req:Request,res:Response){
+        try {
+            console.log('controller gsignup')
+            const {email,name,password} = req.body
+            const parlour = await this.parlourcase.gparlourSignup(name,email,password)
+            console.log(parlour);
+            res.status(200).json(parlour)
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     //vendor login
     async vendorLogin(req:Request,res:Response){
         try {

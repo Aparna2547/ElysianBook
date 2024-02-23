@@ -44,7 +44,7 @@
                     const user = req.app.locals.user;
                     const save = await this.usercase.saveUser(user);
                     if (save) {
-                        console.log('save');
+                        console.log('save',save);
                         return res.status(save.status).json(save);
                     } else {
                         return res.status(400).json({ message: "Invalid otp" });
@@ -56,6 +56,19 @@
             }
         }
 
+
+        async gsignup(req:Request,res:Response){
+            try {
+                console.log('controller gsignup');
+                const {email,name,password} =  req.body
+                const user =await this.usercase.gSignupUser(name,email,password)
+                console.log(user)
+                res.status(200).json(user)
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
 
         
         async logIn(req: Request, res: Response) {
@@ -81,19 +94,22 @@
                 console.log(error);
             }
         }
+        
 
     //forgot password
     async forgotPasswordEmail(req:Request,res:Response){
         try {
-            console.log('inside controller');
+            console.log('inside forgot controller');
             const email = req.body.email;
             // console.log(email,'email in controller')
             const userData:any = await this.usercase.findUserByMail( email);
 
-            // console.log('userdata',userData.data);
-            if(userData.data.data){
-             req.app.locals.user  ={email}
-             req.app.locals.otp = userData?.data?.otp
+            console.log('userdata',userData.data);
+            if(!userData.data.data){
+             req.app.locals.email = email
+             req.app.locals.otp = userData?.data?.otp;
+             console.log('njn',req.app.locals.otp);
+             
              res.status(201).json({data:true})
             }else{
                 res.status(200).json({data:false})
@@ -107,6 +123,38 @@
     }
 
 
+    // verifyotp for forgotpassword
+    async verifyOtpForgotPassword(req:Request,res:Response){
+        try {
+            
+            const otpBody = req.body.otp
+            const otpLocals = req.app.locals.otp 
+            if(otpBody===otpLocals){
+                res.status(200).json(true)
+            }else{
+                res.status(200).json(false)
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+async passwordChange(req:Request,res:Response){
+    try {
+        
+        const email = req.app.locals.email
+        const password = req.body.password
+        
+
+        const Data  = await this.usercase.passwordChange(email,password)
+        res.status(200).json(Data)
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
             
             //user logout
             async logout(req:Request,res:Response){

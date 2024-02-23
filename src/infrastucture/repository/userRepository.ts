@@ -30,7 +30,15 @@ class userRepository implements UserRepository{
             return null
         }
     }
-  
+
+
+  //change password
+    async changePassword(email:string,password:string){
+        const changePasswordStatus = await UserModel.updateOne({email},{$set:{password:password}}) 
+        console.log(changePasswordStatus,'kjhkhkjkjh');
+         
+        return changePasswordStatus;
+    }
 
     
 }

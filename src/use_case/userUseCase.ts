@@ -78,7 +78,7 @@ class Userusecase{
     async findUserByMail(email: string) {
         // console.log(email);
         
-        console.log('inside usecase');
+        console.log('inside forgot usecase');
         const userFound = await this.userRepository.findByEmail(email);
         // console.log(userFound,'userfound')
         if (userFound) {
@@ -93,7 +93,6 @@ class Userusecase{
                 data: {
                     data: false,
                     otp: otp
-
                 }
             };
         } else {
@@ -107,6 +106,17 @@ class Userusecase{
         }
     }
     
+
+    //change password
+
+    async passwordChange(email:string,password:string){
+        const userFound = await this.userRepository.findByEmail(email)
+        if(userFound){
+            const hashedPassword  = await this.Encrypt.createHash(password)
+            const savePasswordStatus = await this.userRepository.changePassword(email,hashedPassword) 
+            return savePasswordStatus
+        }
+    }
 
     //login user
     
@@ -161,6 +171,31 @@ class Userusecase{
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    //google user signup
+
+    async gSignupUser (name:string,email:string,password:string){
+        try {
+            const userFound = await this.userRepository.findByEmail(email)
+    if(userFound){
+        return {
+            status:200,
+            data:false
+        }
+    }    else{
+        
+        const hashedPassword = await this.Encrypt.createHash(password)
+        const userSave = await this.userRepository.saveUser({name,email,password:hashedPassword} as User)
+        return {
+            status:200,
+            data:userSave
+        }
+    }        
+        } catch (error) {
+            console.log(error);
+            
         }
     }
     

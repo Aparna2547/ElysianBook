@@ -24,8 +24,11 @@ const router = express.Router()
 
 router.post('/verifymail',(req,res)=>controller.verifyEmail(req,res))
 router.post('/signup',(req,res)=>controller.verifyOtp(req,res))
+router.post('/gsignup',(req,res)=>controller.gsignup(req,res))
 router.post('/login',(req,res)=>controller.logIn(req,res))
-router.post('/api/user/forgotpassword',(req,res)=>controller.forgotPasswordEmail(req,res))
-router.post('/api/user/logout',(req,res)=>controller.logout(req,res))
+router.post('/forgotpassword',(req,res)=>controller.forgotPasswordEmail(req,res))
+router.post('/verifyOtpForgotPassword',(req,res)=>controller.verifyOtpForgotPassword(req,res))
+router.post('/passwordChange',(req,res)=>controller.passwordChange(req,res))
+router.post('/logout',(req,res)=>controller.logout(req,res))
 
 export default router

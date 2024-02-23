@@ -20,7 +20,7 @@ router.get('/users',(req,res)=>controller.getUsers(req,res))
 router.put('/userblock',(req,res)=>controller.blockUser(req,res))
 router.get('/vendors',(req,res)=>controller.getVendors(req,res))
 router.put('/blockVendor',(req,res)=>controller.blockVendor(req,res))
-router.post('/logout',(req,res)=>controller.adminLogout(req,res))
+router.post('/adminlogout',(req,res)=>controller.adminLogout(req,res))
 
 
 // --------------------------------------------------------------------------------------

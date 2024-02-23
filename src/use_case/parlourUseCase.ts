@@ -4,6 +4,7 @@ import otpGen from "../infrastucture/utils/otpGen";
 import sendOtp from "../infrastucture/utils/sendMail";
 import Encrypt from "../infrastucture/utils/hashPassword";
 import JWTtokens from "../infrastucture/utils/JWTtokens";
+import User from "../domain/user";
 
 class ParlourUseCase{
     private parlourRepository : parlourRepository
@@ -68,6 +69,30 @@ async saveVendor(vendor:Parlour){
         console.log(error);
         
     }
+}
+
+
+//gsignup
+async gparlourSignup (name:string,email:string,password:string){
+try {
+    const parlourFound = await this.parlourRepository.findByEmail(email)
+    if(parlourFound){
+        return {
+            status:200,
+            data:false
+        }
+    }else{
+        const hashedpassword = await this.Encrypt.createHash(password)
+        const parlourSave = await this.parlourRepository.saveParlour({name,email,password:hashedpassword} as User)
+        return{
+            status:200,
+            data:parlourSave
+        }
+    }
+} catch (error) {
+    console.log(error);
+    
+}
 }
 
 
