@@ -15,7 +15,6 @@ const otpSend = new sendOtp()
 const encrypt= new Encrypt()
 const jwtTokens = new JWTtokensClass();
 
-
 const useCase = new Userusecase(repository,otpSend,otp,encrypt,jwtTokens)
 const controller = new userController(useCase)
 

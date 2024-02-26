@@ -30,6 +30,7 @@ class categoryRepository implements ICategoryRepository{
         }
         
     }
+    
     // save category
     async saveCategory(catName:string,image:string){
         const newCategory = new CategoryModel({catName,image})
