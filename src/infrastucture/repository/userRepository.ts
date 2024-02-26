@@ -1,4 +1,4 @@
-import User from "../../domain/user";
+import User from "../../domain_entites/user";
 import { UserModel } from "../database/userModel";
 import UserRepository from "../../use_case/interface/userInterface";
 

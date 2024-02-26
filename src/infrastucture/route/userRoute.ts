@@ -1,4 +1,4 @@
-import userController from "../../adaptors/userController";
+import userController from "../../adaptors/Controllers/userController";;
 import userRepository from "../repository/userRepository";
 import Userusecase from "../../use_case/userUseCase";
 import express from "express"

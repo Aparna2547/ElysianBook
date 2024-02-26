@@ -1,4 +1,4 @@
-import Category from "../../domain/category";
+import Category from "../../domain_entites/category";
 import { CategoryModel } from "../database/CategoryModel";
 import CategoryRepository from "../../use_case/interface/categoryInterface";
 

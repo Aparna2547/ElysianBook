@@ -1,5 +1,5 @@
-import User from "../domain/user";
-import userRepository from "../infrastucture/repository/userRepository";
+import User from "../domain_entites/user";
+import UserRepository from "./interface/userInterface";;
 import otpGen from "../infrastucture/utils/otpGen";
 import sendOtp from "../infrastucture/utils/sendMail";
 import Encrypt from "../infrastucture/utils/hashPassword";
@@ -7,7 +7,7 @@ import JWTtokens from "../infrastucture/utils/JWTtokens"
 
 
 class Userusecase{
-    private userRepository : userRepository
+    private userRepository : UserRepository
     private otpGen :otpGen;
     private sendOtp:sendOtp;
     private Encrypt:Encrypt;
@@ -16,7 +16,7 @@ class Userusecase{
 
 
 
-    constructor(userRepository:userRepository, sendOtp:sendOtp,
+    constructor(userRepository:UserRepository, sendOtp:sendOtp,
         otpGen:otpGen,Encrypt:Encrypt,JWTtokens:JWTtokens){
         this.userRepository = userRepository
         this.sendOtp = sendOtp

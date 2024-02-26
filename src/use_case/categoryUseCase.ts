@@ -1,15 +1,15 @@
 import { errorMonitor } from "nodemailer/lib/xoauth2";
-import Category from "../domain/category";
-import categoryRepository from "../infrastucture/repository/categoryRepository";
+import Category from "../domain_entites/category";
+import CategoryRepository from "./interface/categoryInterface";;
 import { CategoryModel } from "../infrastucture/database/CategoryModel";
 import Cloudinary from "../infrastucture/utils/cloudinary";
 
 class Categoryusecase{
-    private categoryRepository :categoryRepository
+    private categoryRepository :CategoryRepository
     private cloudinary : Cloudinary
 
 
-    constructor(categoryRepository:categoryRepository,cloudinary:Cloudinary){
+    constructor(categoryRepository:CategoryRepository,cloudinary:Cloudinary){
         this.categoryRepository = categoryRepository
         this.cloudinary = cloudinary
     }

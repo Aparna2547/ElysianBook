@@ -1,4 +1,4 @@
-import Parlour from "../../domain/parlour";
+import Parlour from "../../domain_entites/parlour";
 import { ParlourModel } from "../database/ParlourModel";
 import ParlourRepository from "../../use_case/interface/parlourInterface";
 
@@ -25,7 +25,14 @@ class parlourRepository implements ParlourRepository{
         const userFound = await ParlourModel.findById(user)
         return userFound
     }
+
+    //change password
+    async changePassword(email:string,password:string){
+        const changePasswordStatus = await ParlourModel.updateOne({email},{$set:{password:password}})
+        return changePasswordStatus
+    }
 }
+
 
 
 export default parlourRepository

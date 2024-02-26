@@ -1,4 +1,4 @@
-import adminController from "../../adaptors/adminController";
+import adminController from "../../adaptors/Controllers/adminController"; 
 import adminRepository from "../repository/adminRepository";
 import Adminusecase from "../../use_case/adminUseCase";
 import express from "express";
@@ -27,7 +27,7 @@ router.post('/adminlogout',(req,res)=>controller.adminLogout(req,res))
 
 
 //category
-import categoryController from "../../adaptors/categoryController"
+import categoryController from "../../adaptors/Controllers/categoryController";
 import categoryRepository from "../repository/categoryRepository";
 import categoryusecase from "../../use_case/categoryUseCase"
 import Cloudinary from "../utils/cloudinary";
@@ -43,14 +43,6 @@ router.get('/category',(req,res)=>catcontroller.getCategory(req,res))
 router.post('/addcategory',multerMid.single('image'),(req,res)=>catcontroller.addCategory(req,res))
 router.put('/editcategory',multerMid.single('image'),(req,res)=>catcontroller.editCategory(req,res))
 router.put('/hidecategory',(req,res)=>catcontroller.hideCategory(req,res))
-
-
-
-
-
-
-
-
 
 
 

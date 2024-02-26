@@ -1,6 +1,5 @@
 import {Request,Response} from "express"
-import Categoryusecase from "../use_case/categoryUseCase"
-
+import Categoryusecase from "../../use_case/categoryUseCase";
 class categoryController{
     private catergorycase : Categoryusecase
     constructor(categorycase:Categoryusecase){

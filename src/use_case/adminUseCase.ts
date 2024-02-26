@@ -1,17 +1,17 @@
-import Admin from "../domain/admin";
-import adminRepository from "./interface/adminInterface";
+import Admin from "../domain_entites/admin";
+import AdminRepository from "./interface/adminInterface";
 import JWTtokens from "../infrastucture/utils/JWTtokens";
 import Encrypt from "../infrastucture/utils/hashPassword";
 
 
 class Adminusecase{
-    private adminRepository : adminRepository
+    private adminRepository : AdminRepository
     private Encrypt : Encrypt
     private JWTtokens : JWTtokens
 
 
 
-    constructor(adminRepository:adminRepository,Encrypt:Encrypt,JWTtokens:JWTtokens){
+    constructor(adminRepository:AdminRepository,Encrypt:Encrypt,JWTtokens:JWTtokens){
         this.adminRepository =adminRepository
         this.Encrypt = Encrypt
         this.JWTtokens = JWTtokens
@@ -21,7 +21,7 @@ class Adminusecase{
 
     //admin Login
 
-    async adminLogin(admin:any){
+    async   adminLogin(admin:any){
         try {
             console.log('admin usecase');
             const adminFound = await this.adminRepository.findByEmail(admin.email)
@@ -34,7 +34,7 @@ class Adminusecase{
                         status:200,
                         data:{
                             success:true,
-                            message:'authentication success',
+                            message:'successfully logged in',
                             adminId:adminFound._id,
                             token:token
                         }

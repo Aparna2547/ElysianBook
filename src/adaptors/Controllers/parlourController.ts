@@ -1,6 +1,6 @@
 import {Request,Response
 } from "express"
-import ParlourUseCase from "../use_case/parlourUseCase"
+import ParlourUseCase from "../../use_case/parlourUseCase"
 
 
 class parlourController{
@@ -67,6 +67,8 @@ class parlourController{
         try {
             console.log('controller gsignup')
             const {email,name,password} = req.body
+            console.log(email,password);
+            
             const parlour = await this.parlourcase.gparlourSignup(name,email,password)
             console.log(parlour);
             res.status(200).json(parlour)
@@ -92,6 +94,72 @@ class parlourController{
             }
 
             res.status(vendor!.status).json(vendor!.data)
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async vendorForgotPassword(req:Request,res:Response){
+        try {
+            const email = req.body.email
+            const vendorData:any = await this.parlourcase.findVendorByEmail(email)
+            console.log(vendorData);
+
+            if(!vendorData.data.data){
+                req.app.locals.email = email
+                req.app.locals.otp = vendorData?.data?.otp;
+                console.log(req.app.locals.otp);
+
+                res.status(201).json({data:true})
+                
+            }else{
+                res.status(200).json({data:false})
+            }
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async vendorVerifyOtpForgotPassword(req:Request,res:Response){
+        try {
+            const otpBody = req.body.otp;
+            const otpLocals = req.app.locals.otp
+            if(otpBody==otpLocals){
+                res.status(200).json(true)
+            }else{
+                res.status(200).json(false)
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+    async vendorPasswordChange(req:Request,res:Response){
+        try {
+            const email = req.app.locals.email
+            const password = req.body.password
+
+            const Data = await this.parlourcase.vendorPasswordChange(email,password)
+            res.status(200).json(Data)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async vendorLogout(req:Request,res:Response){
+        try {
+            res.cookie('vendorJWT', '', {
+                httpOnly: true,
+                expires: new Date(0)
+            })
+            res.status(200).json({success:true})
             
         } catch (error) {
             console.log(error);

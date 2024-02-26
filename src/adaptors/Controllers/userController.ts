@@ -1,5 +1,5 @@
     import {Request,Response} from "express"
-    import Userusecase from "../use_case/userUseCase"
+    import Userusecase from "../../use_case/userUseCase";
 
 
     class userController{

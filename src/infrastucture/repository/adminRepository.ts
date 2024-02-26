@@ -1,4 +1,4 @@
-import Admin from "../../domain/admin";
+import Admin from "../../domain_entites/admin";
 import { adminModel } from "../database/adminModel";
 import AdminRepository from "../../use_case/interface/adminInterface"
 import { UserModel } from "../database/userModel";

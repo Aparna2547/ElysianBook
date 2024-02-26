@@ -1,20 +1,20 @@
-import Parlour from "../domain/parlour";
-import parlourRepository from "./interface/parlourInterface";
+import Parlour from "../domain_entites/parlour";
+import ParlourRepository from "./interface/parlourInterface";
 import otpGen from "../infrastucture/utils/otpGen";
 import sendOtp from "../infrastucture/utils/sendMail";
 import Encrypt from "../infrastucture/utils/hashPassword";
 import JWTtokens from "../infrastucture/utils/JWTtokens";
-import User from "../domain/user";
+import User from "../domain_entites/user";
 
 class ParlourUseCase{
-    private parlourRepository : parlourRepository
+    private parlourRepository : ParlourRepository
     private otpGen : otpGen
     private sendOtp : sendOtp
     private Encrypt : Encrypt
     private JWTtokens : JWTtokens
 
 
-    constructor( parlourRepository : parlourRepository,otpGen : otpGen,sendOtp : sendOtp, Encrypt : Encrypt,JWTtokens:JWTtokens){
+    constructor( parlourRepository : ParlourRepository,otpGen : otpGen,sendOtp : sendOtp, Encrypt : Encrypt,JWTtokens:JWTtokens){
         this.parlourRepository = parlourRepository
         this.sendOtp = sendOtp
         this.otpGen = otpGen
@@ -147,6 +147,50 @@ async parlourLogin(vendor:any){
     } catch (error) {
         console.log(error);
         
+    }
+}
+
+//forgot password
+async findVendorByEmail(email:string){
+    console.log('inside parlourcase');
+    const parlourFound = await this.parlourRepository.findByEmail(email)
+    console.log('parlouefoound',parlourFound);
+    if(parlourFound){
+        const otp =  await this.otpGen.genOtp(4);
+        console.log(otp,'otp');
+        const mailDetails = await this.sendOtp.forgotSendMail(email,otp);
+        console.log('vendor found');
+        return {
+            status:200,
+            data:{
+                data:false,
+                otp:otp
+            }
+        }
+    }else{
+        return {
+            status:200,
+            data:{
+                data:true
+            }
+
+        }
+    }
+    
+    
+}
+
+//change password
+async vendorPasswordChange (email:string,password:string){
+    const parlourFound = await this.parlourRepository.findByEmail(email)
+    if(parlourFound){
+        console.log('eefkhkhadm');
+        
+        const hashedPassword = await this.Encrypt.createHash(password)
+        console.log(hashedPassword);
+        
+        const savePasswordStatus = await this.parlourRepository.changePassword(email,hashedPassword)
+        return savePasswordStatus
     }
 }
 

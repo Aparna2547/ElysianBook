@@ -1,11 +1,11 @@
 import { Request,Response, request } from "express";
-import AdminUseCase from "../use_case/adminUseCase"
+import Adminusecase from "../../use_case/adminUseCase";
 import { isBlock } from "typescript";
 
 
 class adminController{
-    private admincase: AdminUseCase
-    constructor(admincase:AdminUseCase){
+    private admincase: Adminusecase
+    constructor(admincase:Adminusecase){
         this.admincase = admincase
     }
 
