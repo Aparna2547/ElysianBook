@@ -39,7 +39,7 @@
             try {
                 const otpBody: string = req.body.otp;
                 const otpSaved: string = req.app.locals.otp;
-                console.log('jkjk',otpBody,otpSaved)
+                // console.log('jkjk',otpBody,otpSaved)
                 if (otpBody === otpSaved) {
                     const user = req.app.locals.user;
                     const save = await this.usercase.saveUser(user);

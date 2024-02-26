@@ -1,10 +1,10 @@
 import Admin from "../../domain_entites/admin";
 import { adminModel } from "../database/adminModel";
-import AdminRepository from "../../use_case/interface/adminInterface"
+import IAdminRepository from "../../use_case/interface/adminInterface"
 import { UserModel } from "../database/userModel";
 import { ParlourModel } from "../database/ParlourModel";
 
-class adminRepository implements AdminRepository {
+class adminRepository implements IAdminRepository {
     async findByEmail(email: string) {
        console.log('email check');
        const existingAdmin = await adminModel.findOne({email})

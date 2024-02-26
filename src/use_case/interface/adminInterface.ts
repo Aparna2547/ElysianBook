@@ -1,7 +1,7 @@
 import { PreProcessedFileInfo } from "typescript";
-import Admin from "../../domain/admin";
+import Admin from "../../domain_entites/admin";
 
-interface AdminRepository{
+interface IAdminRepository{
     findByEmail(email:string):Promise<any>,
     blockUser(id:string):Promise<any>,
     getUser():Promise<any>,
@@ -9,4 +9,4 @@ interface AdminRepository{
     blockVendor(id:string):Promise<any>
 }
 
-export default AdminRepository
+export default IAdminRepository

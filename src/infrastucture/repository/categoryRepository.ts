@@ -1,8 +1,8 @@
 import Category from "../../domain_entites/category";
 import { CategoryModel } from "../database/CategoryModel";
-import CategoryRepository from "../../use_case/interface/categoryInterface";
+import ICategoryRepository from "../../use_case/interface/categoryInterface";
 
-class categoryRepository implements CategoryRepository{
+class categoryRepository implements ICategoryRepository{
 
 
 

@@ -1,9 +1,9 @@
 import User from "../../domain_entites/user";
 import { UserModel } from "../database/userModel";
-import UserRepository from "../../use_case/interface/userInterface";
+import IUserRepository from "../../use_case/interface/userInterface";
 
 
-class userRepository implements UserRepository{
+class userRepository implements IUserRepository{
     async saveUser(user:User){
         const newUser = new UserModel(user)
         await newUser.save()

@@ -21,7 +21,7 @@ class Adminusecase{
 
     //admin Login
 
-    async   adminLogin(admin:any){
+    async adminLogin(admin:any){
         try {
             console.log('admin usecase');
             const adminFound = await this.adminRepository.findByEmail(admin.email)

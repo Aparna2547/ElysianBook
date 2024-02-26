@@ -1,9 +1,9 @@
 import Parlour from "../../domain_entites/parlour";
 import { ParlourModel } from "../database/ParlourModel";
-import ParlourRepository from "../../use_case/interface/parlourInterface";
+import IParlourRepository from "../../use_case/interface/parlourInterface";
 
 
-class parlourRepository implements ParlourRepository{
+class parlourRepository implements IParlourRepository{
     async saveParlour(parlour:Parlour){
         const newParlour = new ParlourModel(parlour)
         await newParlour.save()

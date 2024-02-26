@@ -1,10 +1,10 @@
 import User from "../../domain_entites/user"
 
-interface UserRepository{
+interface IUserRepository{
     saveUser(user:User):Promise<any>,
     findByEmail(email:string):Promise<any>,
     changePassword(email:string,password:string):Promise<any>
 }
 
 
-export default UserRepository
+export default IUserRepository
