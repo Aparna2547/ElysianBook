@@ -74,6 +74,7 @@ class Adminusecase{
 
     async blockUser(id:string){
         try {
+            console.log('usecase',id)
             const userStatus = await this.adminRepository.blockUser(id)
             return{
                 status:200,

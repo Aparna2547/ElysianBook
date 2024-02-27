@@ -20,7 +20,7 @@ class adminRepository implements IAdminRepository {
       try {
          console.log('skdjfhkdjh');
          const showUser = await UserModel.find()
-         console.log(showUser)
+         // console.log(showUser)
          return showUser
          
       } catch (error) {
@@ -31,8 +31,10 @@ class adminRepository implements IAdminRepository {
 
    //block user
    async blockUser(id:string){
+      console.log(id)
       console.log('block user');
       const user = await UserModel.findById(id)
+      console.log(user)
       if(user){
          let userStatus;
          if(user.isBlocked===false){
