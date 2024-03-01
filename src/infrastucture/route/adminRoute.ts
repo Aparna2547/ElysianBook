@@ -44,6 +44,19 @@ router.post('/addcategory',multerMid.single('image'),(req,res)=>catcontroller.ad
 router.put('/editcategory',multerMid.single('image'),(req,res)=>catcontroller.editCategory(req,res))
 router.put('/hidecategory',(req,res)=>catcontroller.hideCategory(req,res))
 
+// -------------------------------------------------------------------------------------------------------------------------------
 
+import adminUtilsController from "../../adaptors/Controllers/adminUtilsController"
+import adminUtilsRepository from "../repository/adminUtilsRepository"
+import adminUtilsUseCase from "../../use_case/adminUtilsUseCase"
+
+
+const utilsrepository = new adminUtilsRepository()
+const utilsusecase = new adminUtilsUseCase(utilsrepository)
+const utilscontroller = new adminUtilsController(utilsusecase)
+
+router.get('/facilities',(req,res)=>utilscontroller.getFacilites(req,res))
+router.post('/addFacility',(req,res)=>utilscontroller.addFacility(req,res))
+// router.put('/editFacilty',(req,res)=>utilscontroller.editFacility(req,res))
 
 export default router

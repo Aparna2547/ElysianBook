@@ -3,11 +3,15 @@ import userRoute from '../route/userRoute'
 import parlourRoute from "../route/parlourRoute"
 import adminRoute from "../route/adminRoute"
 import cors from "cors"
+import cookieParser from 'cookie-parser'
+
 export const createServer = () =>{
     try {
         const app = express()
         app.use(express.json())
         app.use(express.urlencoded({ extended: true }))
+        app.use(cookieParser())
+
 
 
         //cors

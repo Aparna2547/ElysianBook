@@ -5,6 +5,7 @@ import sendOtp from "../infrastucture/utils/sendMail";
 import Encrypt from "../infrastucture/utils/hashPassword";
 import JWTtokens from "../infrastucture/utils/JWTtokens";
 import User from "../domain_entites/user";
+import Cloudinary from "../infrastucture/utils/cloudinary";
 
 class ParlourUseCase{
     private parlourRepository : ParlourRepository
@@ -12,14 +13,16 @@ class ParlourUseCase{
     private sendOtp : sendOtp
     private Encrypt : Encrypt
     private JWTtokens : JWTtokens
+    private Cloudinary : Cloudinary
 
 
-    constructor( parlourRepository : ParlourRepository,otpGen : otpGen,sendOtp : sendOtp, Encrypt : Encrypt,JWTtokens:JWTtokens){
+    constructor(parlourRepository : ParlourRepository,otpGen : otpGen,sendOtp : sendOtp, Encrypt : Encrypt,JWTtokens:JWTtokens,Cloudinary:Cloudinary){
         this.parlourRepository = parlourRepository
         this.sendOtp = sendOtp
         this.otpGen = otpGen
         this.Encrypt = Encrypt
         this.JWTtokens = JWTtokens;
+        this.Cloudinary = Cloudinary;
     }
 
 
@@ -83,7 +86,7 @@ try {
         }
     }else{
         const hashedpassword = await this.Encrypt.createHash(password)
-        const parlourSave = await this.parlourRepository.saveParlour({name,email,password:hashedpassword} as User)
+        const parlourSave = await this.parlourRepository.saveParlour({name,email,password:hashedpassword} as Parlour)
         return{
             status:200,
             data:parlourSave
@@ -194,6 +197,40 @@ async vendorPasswordChange (email:string,password:string){
     }
 }
 
+//adding parlour
+async addParlourDetails (parlourData:any,vendorId:string){
+
+    const parlourDetails = await this.parlourRepository.findParlourById(vendorId)
+
+    const uploadBanners = await Promise.all(
+        parlourData.banners.map(async (file:any)=>{
+            return await this.Cloudinary.saveToCloudinary(file)
+        })
+    );
+
+    parlourData.banners = uploadBanners;
+    parlourData._id = vendorId
+    console.log('helloo',parlourData);
+    
+    
+
+    const parlourStatus = await this.parlourRepository.addParlour(parlourData,vendorId)
+    return parlourStatus
+}
+
+
+async findParlourById (vendorId:string){
+    try {
+        const parlourFound  = await this.parlourRepository.findParlourById(vendorId)
+        return{
+            status:200,
+            data:parlourFound
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 }
 
 export default ParlourUseCase

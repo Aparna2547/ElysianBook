@@ -3,7 +3,7 @@ import mongoose,{Document,Schema} from "mongoose"
 
 interface Admin extends Document{
     email:String,
-    password:String
+    password:String,
 }
 
 const adminSchema : Schema<Admin> = new mongoose.Schema({

@@ -54,7 +54,7 @@ class categoryController{
     async hideCategory(req:Request,res:Response){
         try {
             const id:string = req.query.id as string
-            console.log('costroller',id);
+            console.log('controller',id);
             
             const Data = await this.catergorycase.hideCat(id)
             res.status(200).json(Data)

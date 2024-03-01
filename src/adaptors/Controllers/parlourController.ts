@@ -1,7 +1,8 @@
 import {Request,Response
 } from "express"
 import ParlourUseCase from "../../use_case/parlourUseCase"
-
+import JWTtokens from "../../infrastucture/utils/JWTtokens"
+import jwt,{ JwtPayload } from "jsonwebtoken"
 
 class parlourController{
     private parlourcase : ParlourUseCase
@@ -87,11 +88,13 @@ class parlourController{
             if(vendor && vendor.data && typeof vendor.data ==='object' && 'token' in vendor.data){
                 res.cookie('vendorJWT',vendor.data.token,{
                     httpOnly: true,
-                    secure: process.env.Node_ENV !== 'development',
-                    sameSite: 'strict',
-                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                        secure: process.env.Node_ENV !== 'development',
+                        sameSite: 'strict',
+                        maxAge: 30 * 24 * 60 * 60 * 1000,
                 });
             }
+            
+            
 
             res.status(vendor!.status).json(vendor!.data)
             
@@ -147,6 +150,49 @@ class parlourController{
 
             const Data = await this.parlourcase.vendorPasswordChange(email,password)
             res.status(200).json(Data)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+
+    //parlour adding (request sent to admin)
+        async addParlour(req:Request,res:Response){
+            try {
+                // console.log('helloooo')
+                const token = req.cookies.vendorJWT
+                
+                const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
+                const vendorId = decoded.id;
+                
+                console.log('parlour adding in controller');
+                
+                const parlourDetails = req.body
+                const banners = req.files as Object
+                
+                parlourDetails.banners = banners
+                
+                // console.log(parlourDetails,image);
+                const addParlourDetails = await this.parlourcase.addParlourDetails(parlourDetails,vendorId)
+                res.status(200).json(addParlourDetails)
+
+                
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async getParlour(req:Request,res:Response){
+        try {
+            const token = req.cookies.vendorJWT
+                
+            const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
+            const vendorId = decoded.id;
+            
+            const parlourDetails = await this.parlourcase.findParlourById(vendorId)
+            res.status(200).json(parlourDetails)
         } catch (error) {
             console.log(error);
             
