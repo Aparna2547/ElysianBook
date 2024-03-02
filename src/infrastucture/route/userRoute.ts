@@ -30,4 +30,7 @@ router.post('/verifyOtpForgotPassword',(req,res)=>controller.verifyOtpForgotPass
 router.post('/passwordChange',(req,res)=>controller.passwordChange(req,res))
 router.post('/logout',(req,res)=>controller.logout(req,res))
 
+//palour show
+router.get('/allParlours',(req,res)=>controller.parloursToShow(req,res))
+
 export default router

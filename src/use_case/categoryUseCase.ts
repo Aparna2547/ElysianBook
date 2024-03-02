@@ -59,17 +59,27 @@ class Categoryusecase{
                 
             }
         }
-        async editCat(category:any){
+        async editCategory(id:string,catName:string,image:object){
             try {
-                const Data = await this.categoryRepository.findCategoryById(category._id)
-                console.log(Data);
-                if(Data){
-                    const editedData =await this.categoryRepository.editCat(category.catName,category.id)
+                const categoryFound = await this.categoryRepository.findCategoryById(id)
+                // console.log(Data);
+                // if(Data){
+                let imageLink
+                if(image){
+                    imageLink = await this.cloudinary.saveToCloudinary(image)
+                    console.log(imageLink);    
+                }
+                else{
+                    imageLink = categoryFound.image
+                }
+
+              
+                    const editedData =await this.categoryRepository.editCategory(id,catName,imageLink)
                     return{
                         status:200,
                         data:editedData
                     }
-                }
+                // }
                 
             } catch (error) {
                 console.log(error);

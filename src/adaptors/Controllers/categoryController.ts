@@ -41,8 +41,10 @@ class categoryController{
     async editCategory(req:Request,res:Response){
         try {
             const {catName}= req.body
-            const id = req.params.id as string
-            const catFound = await this.catergorycase.editCat(id)
+            const id = req.query.id as string
+            const image = req.file as object
+            console.log(image)
+            const catFound = await this.catergorycase.editCategory(id,catName,image)
             res.status(200).json(catFound)
         } catch (error) {
             console.log(error);

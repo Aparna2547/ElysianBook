@@ -156,6 +156,24 @@ async passwordChange(req:Request,res:Response){
     }
 }
             
+
+//show all parlour
+async parloursToShow(req:Request,res:Response){
+    try {
+        console.log('get all parlours')
+        const page = parseInt(req.query.page as string) 
+
+        
+        const parlours = await this.usercase.parloursToShow(page)
+        res.status(200).json(parlours)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+
             //user logout
             async logout(req:Request,res:Response){
                 try {

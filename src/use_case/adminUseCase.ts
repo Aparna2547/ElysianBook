@@ -117,6 +117,47 @@ class Adminusecase{
         }
     }
 
+
+    async getParlours(){
+        try {
+            console.log("getparlour usecase");
+            const parlourStatus = await this.adminRepository.getVendor()
+            return{
+                status:200,
+                data:parlourStatus
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async singleParlour(id:string){
+        try {
+            console.log('singleparlor')
+            const singleParlour = await this.adminRepository.getSingleParlourDetails(id)
+            return {
+                status:200,
+                data:singleParlour
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async parlourRequestConfirmation(id:string,value:string){
+        try {
+            console.log('inside parlourRequestConfirmation usecase')
+            const parlourRequest = await this.adminRepository.parlourRequest(id,value)
+            return {
+                status:200,
+                data:parlourRequest
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 }
 
 

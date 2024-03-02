@@ -26,7 +26,7 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
                 return res.status(401).json({ message: 'Not authorized, invalid token' });
             }
 
-            const vendor = await parlourRepo.findVenorById(decoded.id as string);
+            const vendor = await parlourRepo.findParlourById(decoded.id as string);
             if (vendor) {
                 // req.userId = user._id;
                 if (vendor.isBlocked) {

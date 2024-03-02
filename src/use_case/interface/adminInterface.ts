@@ -6,7 +6,9 @@ interface IAdminRepository{
     blockUser(id:string):Promise<any>,
     getUser():Promise<any>,
     getVendor():Promise<any>,
-    blockVendor(id:string):Promise<any>
+    blockVendor(id:string):Promise<any>,
+    getSingleParlourDetails(id:string):Promise<any>,
+    parlourRequest(id:string,value:string):Promise<any>
 }
 
 export default IAdminRepository

@@ -91,6 +91,45 @@ class adminController{
         }
     }
 
+    async getParlours(req:Request,res:Response){
+        try {
+            console.log('getParlours')
+            const parlourStatus = await this.admincase.getParlours()
+            res.status(200).json(parlourStatus)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+    async singleParlourDetails(req:Request,res:Response){
+        try {
+            const id = req.query.id as string;
+            console.log('controller work aavanee',id)
+            const singleParlourStatus = await this.admincase.singleParlour(id);
+            res.status(200).json(singleParlourStatus)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async parlourRequestConfirmation(req:Request,res:Response){
+        try {
+            console.log('inside the new page')
+            const id = req.body.id as string
+            const value = req.body.value as string
+            console.log(value,'value')
+            console.log(id,'id')
+            const confirmationValue = await this.admincase.parlourRequestConfirmation(id,value)
+            res.status(200).json(confirmationValue)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     //admin logout
     async adminLogout(req:Request,res:Response){
         try {

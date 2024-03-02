@@ -1,6 +1,7 @@
 import User from "../../domain_entites/user";
 import { UserModel } from "../database/userModel";
 import IUserRepository from "../../use_case/interface/userInterface";
+import { ParlourModel } from "../database/ParlourModel";
 
 
 class userRepository implements IUserRepository{
@@ -41,6 +42,15 @@ class userRepository implements IUserRepository{
     }
 
     
+    async getParloursToShow(page:number){
+        let limit = 3
+        let skip = (page - 1)* limit
+        const totalParlours = await ParlourModel.find({status:{$eq:"Active"}}).countDocuments()
+        const totalPages = Math.floor(totalParlours/limit)
+        const parlours = await ParlourModel.find({status:{$eq:"Active"}}).skip(skip).limit(limit);
+        console.log('loo',parlours)
+        return {parlours,totalPages}
+    }
 }
 
 export default userRepository

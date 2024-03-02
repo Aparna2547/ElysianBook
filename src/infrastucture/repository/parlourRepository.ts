@@ -52,7 +52,7 @@ class parlourRepository implements IParlourRepository {
         longitude: parlourData.longitude,
         facilities: parlourData.facilities,
         banners: parlourData.banners,
-        status:"pending"
+        status:"Pending"
       },
     });
     console.log("Parlour details saved successfully");

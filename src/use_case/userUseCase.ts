@@ -198,6 +198,20 @@ class Userusecase{
             
         }
     }
+
+
+    async parloursToShow(page:number){
+        try {
+            const parlours = await this.userRepository.getParloursToShow(page)
+            return{
+                status:200,
+                data:parlours
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
     
 
 }

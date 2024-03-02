@@ -8,6 +8,7 @@ import Encrypt from "../utils/hashPassword"
 import JWTtokensClass from "../utils/JWTtokens"
 import { multerMid } from "../middleware/multerMiddleware"
 import CloudinaryUtil from "../utils/cloudinary"
+import { protect } from "../middleware/vendorAuth"
 
 
 
@@ -33,8 +34,8 @@ router.post('/parlourVerifyOtpForgotPassword',(req,res)=>controller.vendorVerify
 router.post('/vendorPasswordChange',(req,res)=>controller.vendorPasswordChange(req,res))
 
 
-router.post('/addParlour',multerMid.array('banners',3),(req,res)=>controller.addParlour(req,res))
-router.get('/getParlourDetails',(req,res)=>controller.getParlour(req,res))
+router.post('/addParlour',protect,multerMid.array('banners',3),(req,res)=>controller.addParlour(req,res))
+router.get('/getParlourDetails',protect,(req,res)=>controller.getParlour(req,res))
 router.post('/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 export default router
 

@@ -53,11 +53,12 @@ class categoryRepository implements ICategoryRepository{
     }
 
     //edit category
-    async editCat(catName:string,id:string){
+    async editCategory(id:string,catName:string,image:string){
         try {
-            const Data = await CategoryModel.updateOne(
-                {_id:id},{$set:{catName}}
+            const editCategoryStatus = await CategoryModel.updateOne(
+                {_id:id},{$set:{catName,image}}
             )
+            return editCategoryStatus
         } catch (error) {
             console.log(error);
             

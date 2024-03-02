@@ -6,7 +6,7 @@ saveCategory(category:string,image:string):Promise<any>,
 getCat():Promise<any>,
 findCategory(catName:string):Promise<any>,
 findCategoryById(id:string):Promise<any>,
-editCat(id:string,catName:string):Promise<any>,
+editCategory(id:string,catName:string,image:string):Promise<any>,
 hideCat(id:string):Promise<any>
 
 }
