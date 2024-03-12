@@ -32,5 +32,5 @@ router.post('/logout',(req,res)=>controller.logout(req,res))
 
 //palour show
 router.get('/allParlours',(req,res)=>controller.parloursToShow(req,res))
-
+router.get('/parlourDetails/:id',(req,res)=>controller.singleParlourDetails(req,res))
 export default router

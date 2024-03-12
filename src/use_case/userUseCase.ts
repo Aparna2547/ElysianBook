@@ -7,12 +7,12 @@ import JWTtokens from "../infrastucture/utils/JWTtokens"
 
 
 class Userusecase{
+
     private userRepository : UserRepository
     private otpGen :otpGen;
     private sendOtp:sendOtp;
     private Encrypt:Encrypt;
     private JWTtokens:JWTtokens;
-
 
 
 
@@ -213,6 +213,19 @@ class Userusecase{
         }
     }
     
+
+    async singleParlourDetails(id:string){
+        try {
+            const singleParlour  = await this.userRepository.getSingleParlourDetails(id)
+            return {
+                status:200,
+                data:singleParlour
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 
 }
 

@@ -4,7 +4,8 @@ interface IUserRepository{
     saveUser(user:User):Promise<any>,
     findByEmail(email:string):Promise<any>,
     changePassword(email:string,password:string):Promise<any>,
-    getParloursToShow(page:number):Promise<any>
+    getParloursToShow(page:number):Promise<any>,
+    getSingleParlourDetails(id:string):Promise<any>
 }
 
 

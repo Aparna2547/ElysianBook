@@ -11,7 +11,10 @@ class categoryController{
     async getCategory(req:Request,res:Response){
         try {
             console.log('all categories');
-            const allCategory = await this.catergorycase.getCategory()
+            const page = parseInt(req.query.page as string)
+            const search = req.query.search as string
+
+            const allCategory = await this.catergorycase.getCategory(search,page)
             res.status(200).json(allCategory?.data)
             
         } catch (error) {

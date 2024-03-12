@@ -37,7 +37,12 @@ class adminController{
     async getUsers(req:Request,res:Response){
         try {
             console.log('all users');
-            const allUsers = await this.admincase.getUser()
+            const search = req.query.search as string || "" ;
+            const page = parseInt(req.query.page as string)
+            
+            console.log(search,'search')
+
+            const allUsers = await this.admincase.getUser(search,page)
             res.status(200).json(allUsers?.data)            
         } catch (error) {
             console.log(error);
@@ -63,18 +68,20 @@ class adminController{
 
 
     //list all vendors
-    async getVendors(req:Request,res:Response){
-        try {
-            console.log('all vendrs');
-            const allVendors = await this.admincase.getVendor()
-            console.log(allVendors);
-            res.status(200).json(allVendors?.data)
+    // async getVendors(req:Request,res:Response){
+    //     try {
+    //         console.log('all vendrs');
+    //         const search = req.query.search as string
+    //         const page = parseInt(req.query.page as string)
+    //         const allVendors = await this.admincase.getVendor(search,page)
+    //         console.log(allVendors);
+    //         res.status(200).json(allVendors?.data)
             
-        } catch (error) {
-            console.log(error);
+    //     } catch (error) {
+    //         console.log(error);
             
-        }
-    }
+    //     }
+    // }
 
 
     //block vendor
@@ -94,7 +101,10 @@ class adminController{
     async getParlours(req:Request,res:Response){
         try {
             console.log('getParlours')
-            const parlourStatus = await this.admincase.getParlours()
+
+            const search = req.query.search as string
+            const page = parseInt(req.query.page as string)
+            const parlourStatus = await this.admincase.getParlours(search,page)
             res.status(200).json(parlourStatus)
         } catch (error) {
             console.log(error);

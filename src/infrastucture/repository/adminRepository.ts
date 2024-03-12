@@ -16,12 +16,23 @@ class adminRepository implements IAdminRepository {
   }
 
   //getting user
-  async getUser() {
+  async getUser(search:string,page:number) {
     try {
-      console.log("skdjfhkdjh");
-      const showUser = await UserModel.find();
-      // console.log(showUser)
-      return showUser;
+      console.log("alll users");
+      // const showUser = await UserModel.find();
+      const limit = 5
+      let skip = (page - 1)* limit;
+      let totalUsers = await UserModel.find({}).countDocuments();
+      let totalPages = Math.floor(totalUsers/limit)
+
+      const showUser = await UserModel.find({
+        $or: [
+          {name : {$regex : '^' + search, $options: "i" } },
+          {email: {$regex : '^' + search, $options : "i"}}
+        ]
+      }).skip(skip).limit(limit);
+      console.log(showUser)
+      return {showUser,totalPages};
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +43,9 @@ class adminRepository implements IAdminRepository {
     console.log(id);
     console.log("block user");
     const user = await UserModel.findById(id);
-    console.log(user);
+    // user.isBlocked = !user?.isBlocked
+    // await user.save()
+    // console.log(user);
     if (user) {
       let userStatus;
       if (user.isBlocked === false) {
@@ -51,14 +64,28 @@ class adminRepository implements IAdminRepository {
     } else {
       return null;
     }
+    // return user
   }
 
   //list all vendors
-  async getVendor() {
+  async getParlours(search:string,page:number) {
     console.log("all vendors-usecase");
-    const showVendors = await ParlourModel.find();
-   //  console.log(showVendors);l
-    return showVendors;
+    // const showVendors = await ParlourModel.find();
+
+    const limit = 5;
+    let skip = (page - 1)* limit;
+    let totalParlours = await ParlourModel.find({}).countDocuments()
+    let totalPages = Math.floor(totalParlours/limit);
+
+    const showVendors = await ParlourModel.find({
+      $or:[
+        {name: {$regex : '^' + search ,$options:"i"}},
+        {email: {$regex : '^' + search ,$options:"i"}}
+      ]
+    }).skip(skip).limit(limit);UserModel
+    console.log('parlours',showVendors);
+    
+    return {showVendors,totalPages};
   }
 
   //block vendor

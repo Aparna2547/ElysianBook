@@ -40,12 +40,19 @@ class categoryRepository implements ICategoryRepository{
 
 
     //all category
-    async getCat(){
+    async getCat(search:string,page:number){
         try {
-            const showCat = await CategoryModel.find()
-            console.log(showCat);
-            return showCat
-            
+console.log('repository')
+            let limit = 5;
+            let skip = (page -1) * limit;
+            let totalCategories = await CategoryModel.find({}).countDocuments();
+            let totalPages = Math.floor(totalCategories/limit)
+            let categories = await CategoryModel.find({
+                $or:[
+                    {catName : {$regex : '^' + search, $options: "i" } },
+                ]
+            }).skip(skip).limit(limit);
+            return {categories,totalPages}
         } catch (error) {
             console.log(error);
             

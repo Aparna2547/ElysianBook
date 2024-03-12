@@ -16,9 +16,10 @@ class Categoryusecase{
 
 
     //all category
-    async getCategory(){
+    async getCategory(search:string,page:number){
         try {
-            const category = await this.categoryRepository.getCat()
+            console.log('controller')
+            const category = await this.categoryRepository.getCat(search,page)
             return {
                 status:200,
                 data:category

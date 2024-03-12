@@ -19,7 +19,7 @@ const router = express.Router()
 router.post('/login',(req,res)=>controller.verifyEmail(req,res))
 router.get('/users',protect,(req,res)=>controller.getUsers(req,res))
 router.put('/userblock',protect,(req,res)=>controller.blockUser(req,res))
-router.get('/vendors',protect,(req,res)=>controller.getVendors(req,res))
+// router.get('/vendors',protect,(req,res)=>controller.getVendors(req,res))
 router.put('/blockVendor',protect,(req,res)=>controller.blockVendor(req,res))
 router.get('/parlours',protect,(req,res)=>controller.getParlours(req,res))
 router.get('/singleParlour',protect,(req,res)=>controller.singleParlourDetails(req,res))
@@ -29,6 +29,9 @@ router.post('/adminlogout',(req,res)=>controller.adminLogout(req,res))
 
 // --------------------------------------------------------------------------------------
 
+
+
+//..............................................................................................
 
 //category
 import categoryController from "../../adaptors/Controllers/categoryController";

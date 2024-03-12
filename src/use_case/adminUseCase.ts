@@ -57,9 +57,9 @@ class Adminusecase{
     }
 
     //all users
-    async getUser(){
+    async getUser(search:string,page:number){
         try {
-            const users = await this.adminRepository.getUser()
+            const users = await this.adminRepository.getUser(search,page)
             return{
                 status:200,
                 data:users
@@ -87,19 +87,19 @@ class Adminusecase{
     }
 
     //show all vendors
-    async getVendor(){
-        try {
+    // async getVendor(search:string,page:number){
+    //     try {
             
-            const vendors = await this.adminRepository.getVendor()
-            return {
-                status:200,
-                data:vendors
-            }
-        } catch (error) {
-            console.log(error);
+    //         const vendors = await this.adminRepository.getVendor(search,page)
+    //         return {
+    //             status:200,
+    //             data:vendors
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
             
-        }
-    }
+    //     }
+    // }
 
     //block vendor
     async blockVendor(id:string){
@@ -118,10 +118,10 @@ class Adminusecase{
     }
 
 
-    async getParlours(){
+    async getParlours(search:string,page:number){
         try {
             console.log("getparlour usecase");
-            const parlourStatus = await this.adminRepository.getVendor()
+            const parlourStatus = await this.adminRepository.getParlours(search,page)
             return{
                 status:200,
                 data:parlourStatus

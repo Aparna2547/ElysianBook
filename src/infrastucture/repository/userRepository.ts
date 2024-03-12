@@ -48,8 +48,20 @@ class userRepository implements IUserRepository{
         const totalParlours = await ParlourModel.find({status:{$eq:"Active"}}).countDocuments()
         const totalPages = Math.floor(totalParlours/limit)
         const parlours = await ParlourModel.find({status:{$eq:"Active"}}).skip(skip).limit(limit);
-        console.log('loo',parlours)
+        // console.log('loo',parlours)
         return {parlours,totalPages}
+    }
+
+
+     async getSingleParlourDetails(id: string): Promise<any> {
+     try {
+            const parlourDetails = await ParlourModel.findOne({_id:id})
+            console.log(parlourDetails)
+            return parlourDetails
+     } catch (error) {
+        console.log(error);
+        
+     }   
     }
 }
 
