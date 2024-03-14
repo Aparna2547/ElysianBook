@@ -67,3 +67,6 @@ router.post('/addFacility',protect,(req,res)=>utilscontroller.addFacility(req,re
 // router.put('/editFacilty',protect,(req,res)=>utilscontroller.editFacility(req,res))
 
 export default router
+
+
+//-------------------------------------------------------------------------------------------

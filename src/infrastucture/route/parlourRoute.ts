@@ -37,6 +37,36 @@ router.post('/vendorPasswordChange',(req,res)=>controller.vendorPasswordChange(r
 router.post('/addParlour',protect,multerMid.array('banners',3),(req,res)=>controller.addParlour(req,res))
 router.get('/getParlourDetails',protect,(req,res)=>controller.getParlour(req,res))
 router.post('/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
+
+
+//-------------------------------------------------------SERVICES-----------------------------------------------------
+import serviceController from "../../adaptors/Controllers/serviceController"
+import serviceRepository from "../repository/serviceRepository"
+import serviceUsecase from "../../use_case/serviceUseCase"
+import CloudinaryService from "../utils/cloudinary"
+
+
+const servicerepository = new serviceRepository()
+const cloudinary = new CloudinaryService()
+const serviceusecase = new serviceUsecase(servicerepository,cloudinary);
+const servicecontroller = new serviceController(serviceusecase)
+
+
+
+
+// router.get('/services',protect,(req,res)=>servicecontroller.getServices(req,res))
+
+router.post('/addService',protect,multerMid.single('image'),(req,res)=>servicecontroller.addService(req,res))
+router.get('/categoriesToShow',protect,(req,res)=>servicecontroller.categoriesToShow(req,res))
+// router.post('/editService',protect,(req,res)=>servicecontroller.editService(req,res))
+// router.post('/listService',protect,(req,res)=>servicecontroller.listService(req,res))
+
+
+
+
+
+
+
 export default router
 
 

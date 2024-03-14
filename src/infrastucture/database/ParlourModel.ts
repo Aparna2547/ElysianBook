@@ -1,25 +1,25 @@
 import mongoose,{Document,Schema} from "mongoose"
+import Parlour from "../../domain_entites/parlour"
 
-
-interface Parlour extends Document{
-    name:String,
-    email:String,
-    password:String,
-    isBlocked:Boolean,
-    parlourName:String,
-    landmark:String,
-    locality:String,
-    district:String,
-    openingTime:String,
-    closingTime:String,
-    contact:Number,
-    seats:Number,
-    latitude:Number,
-    longitude:Number,
-    facilities:String[],
-    banners:Array<string>,
-    status:String
-}
+// interface Parlour extends Document{
+//     name:String,
+//     email:String,
+//     password:String,
+//     isBlocked:Boolean,
+//     parlourName:String,
+//     landmark:String,
+//     locality:String,
+//     district:String,
+//     openingTime:String,
+//     closingTime:String,
+//     contact:Number,
+//     seats:Number,
+//     latitude:Number,
+//     longitude:Number,
+//     facilities:String[],
+//     banners:Array<string>,
+//     status:String
+// }
 
 const parlourSchema : Schema<Parlour> = new mongoose.Schema({
     name:{

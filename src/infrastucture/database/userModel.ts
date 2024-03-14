@@ -1,12 +1,12 @@
 import mongoose,{Document,Schema} from "mongoose";
+import User from "../../domain_entites/user";
 
-
-interface User extends Document{
-    name:String,
-    email:String,
-    password:String
-    isBlocked:Boolean
-}
+// interface User extends Document{
+//     name:String,
+//     email:String,
+//     password:String
+//     isBlocked:Boolean
+// }
 
 const userSchema : Schema<User> = new mongoose.Schema({
     name:{

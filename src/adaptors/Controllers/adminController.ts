@@ -1,4 +1,4 @@
-import { Request,Response, request } from "express";
+import { Request,Response } from "express";
 import Adminusecase from "../../use_case/adminUseCase";
 import { isBlock } from "typescript";
 

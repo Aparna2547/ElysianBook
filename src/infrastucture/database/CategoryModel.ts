@@ -1,10 +1,11 @@
 import mongoose,{Document,Schema} from "mongoose"
+import Category from "../../domain_entites/category"
 
-interface Category extends Document{
-    catName:String,
-    image:String,
-    hide:Boolean
-}
+// interface Category extends Document{
+//     catName:String,
+//     image:String,
+//     hide:Boolean
+// }
 
 const categorySchema : Schema<Category>  = new mongoose.Schema({
     catName:{
