@@ -32,14 +32,30 @@ class serviceRepository implements IServiceRepository{
         return showCategories
     }
 
-    async showAllServices(){
+    async showAllServices(search:string,page:number){
         console.log('allservice repo');
-        const allservices = await ServiceModel.find({})
-        console.log(allservices);
-        
-        return allservices
+        let limit = 4;
+        let skip = (page -1) * limit;
+        let totalServices = await ServiceModel.find({}).countDocuments();
+        let totalPages = Math.floor(totalServices/limit)
+
+        const allservices = await ServiceModel.find({
+            serviceName : {$regex : '^' + search,$options : "i"}
+        }).skip(skip).limit(limit);
+        // console.log(allservices);    
+        return {allservices,totalPages}
         
     }
+
+    async listService(id:string){
+        console.log('repo',id);
+        // const service = await ServiceModel.findById(id)
+        // service.isListed = !service?.isListed
+        // await service.save()
+        // console.log(service)
+        
+    }
+
 }
 
 

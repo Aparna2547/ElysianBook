@@ -43,10 +43,25 @@ class serviceController{
   async showAllServices(req:Request,res:Response){
     try {
       console.log('show all services controller');
-      
-      const showAllServices = await this.servicecase.showAllServices()
+      const search = req.query.search as string
+      const page = parseInt(req.query.page as string)
+      const showAllServices = await this.servicecase.showAllServices(search,page)
       res.status(200).json(showAllServices)
       
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  //list services
+  async listService(req:Request,res:Response){
+    try { 
+      const id = req.query.id as string
+      console.log('controller,id',id);
+      const serviceData = await this.servicecase.listService(id)
+      res.status(200).json(serviceData)
       
     } catch (error) {
       console.log(error);

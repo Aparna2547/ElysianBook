@@ -15,7 +15,8 @@ const serviceSchema : Schema<Services> = new mongoose.Schema({
         type:Number,
     },
     isListed:{
-        type:Boolean
+        type:Boolean,
+        default:false
     },
     description:{
         type:String

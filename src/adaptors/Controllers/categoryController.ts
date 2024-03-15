@@ -55,7 +55,7 @@ class categoryController{
         }
     }
 
-    //delete category
+    //list category
     async hideCategory(req:Request,res:Response){
         try {
             const id:string = req.query.id as string

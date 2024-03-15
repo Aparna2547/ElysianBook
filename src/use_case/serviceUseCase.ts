@@ -55,14 +55,30 @@ class Serviceusecase{
         }
     }
 
-    async showAllServices(){
+    async showAllServices(search:string,page:number){
         try {
             console.log('inside allsercice usecase');
-            const showAllServices = await this.serviceRepository.showAllServices();
+            const showAllServices = await this.serviceRepository.showAllServices(search,page);
             return{
                 status:200,
                 data:showAllServices
             }            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    //listing
+    async listService(id:string){
+        try {
+            console.log('usecaSe ',id);
+            const serviceStatus = await this.serviceRepository.listService(id)
+            return{
+                status:200,
+                data:serviceStatus
+            }
+            
         } catch (error) {
             console.log(error);
             

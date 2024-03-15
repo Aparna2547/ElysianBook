@@ -9,6 +9,7 @@ class categoryRepository implements ICategoryRepository{
     //cahecking existing category
     async findCategory(catName:string){
         console.log('inside findcategory');
+        
         const existingCat = await CategoryModel.findOne({catName:catName})
         if(existingCat){
             return existingCat
