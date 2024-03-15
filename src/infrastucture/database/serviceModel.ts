@@ -7,15 +7,21 @@ const serviceSchema : Schema<Services> = new mongoose.Schema({
     serviceName:{
         type:String,
     },
-    category:{
-        type:String,
-        ref:'Category'
+    category: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'category'
     },
     duration:{
-        type:String,
+        type:Number,
     },
     isListed:{
         type:Boolean
+    },
+    description:{
+        type:String
+    },
+    price:{
+        type:Number
     },
     image:{
         type:String

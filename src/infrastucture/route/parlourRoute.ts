@@ -54,8 +54,7 @@ const servicecontroller = new serviceController(serviceusecase)
 
 
 
-// router.get('/services',protect,(req,res)=>servicecontroller.getServices(req,res))
-
+router.get('/services',protect,(req,res)=>servicecontroller.showAllServices(req,res))
 router.post('/addService',protect,multerMid.single('image'),(req,res)=>servicecontroller.addService(req,res))
 router.get('/categoriesToShow',protect,(req,res)=>servicecontroller.categoriesToShow(req,res))
 // router.post('/editService',protect,(req,res)=>servicecontroller.editService(req,res))

@@ -1,9 +1,13 @@
+import { ObjectId } from "mongoose";
+
 interface Services{
   id?:string,
   serviceName:string,
-  category:string,
-  duration:string,
+  category:ObjectId | string,
+  duration:number,
   isListed:boolean,
+  description:string,
+  price:number,
   image:string,
 
 }

@@ -1,6 +1,7 @@
 import { ServiceModel } from "../database/serviceModel";
 import IServiceRepository from "../../use_case/interface/serviceInterface";
 import { CategoryModel } from "../database/CategoryModel";
+import { ObjectId } from "mongoose";
 
 class serviceRepository implements IServiceRepository{
 
@@ -14,12 +15,15 @@ class serviceRepository implements IServiceRepository{
         }
     }
 
-     async saveService(serviceName: string, category: string,duration:string, image: string): Promise<any> {
-        console.log('inside serice repos')
-        const newService = new ServiceModel({serviceName,category,duration,image})
+     async saveService(serviceName: string, category: ObjectId,duration:string,description:string,price:number, image: string): Promise<any> {
+        console.log('inside service repo')
+        const newService = new ServiceModel({serviceName,category,duration,description,price,image})
         await newService.save();
         console.log('service added')
+        return newService
     }
+
+  
 
 
     async categoriesToShow(){
@@ -27,6 +31,17 @@ class serviceRepository implements IServiceRepository{
         // console.log(showCategories)
         return showCategories
     }
+
+    async showAllServices(){
+        console.log('allservice repo');
+        const allservices = await ServiceModel.find({})
+        console.log(allservices);
+        
+        return allservices
+        
+    }
 }
+
+
 
 export default serviceRepository
