@@ -199,6 +199,100 @@ class parlourController{
         }
     }
 
+
+    async vendorProfile(req:Request,res:Response){
+        try {
+            console.log('profile vendorcontroler')
+            let vendorId;
+            const token = req.cookies.vendorJWT
+            console.log(token)
+            if(token){
+                const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload;
+                vendorId = decoded.id;
+            }
+            console.log(vendorId,'vendorid')
+            const profileStatus = await this.parlourcase.vendorProfile(vendorId)
+            res.status(200).json(profileStatus)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async editVendorName(req:Request,res:Response){
+        try{
+            console.log('edit venor controller');
+
+            let vendorId;
+            const token = req.cookies.vendorJWT
+            if(token){
+                const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload;
+                vendorId = decoded.id;
+            }
+            console.log(vendorId,'vendorid')
+
+            const name = req.body.name as string
+            console.log(name)
+            const nameStatus = await this.parlourcase.editVendorName(vendorId,name)
+            res.status(200).json(nameStatus)
+            
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+
+    async editVendorPassword(req:Request,res:Response){
+        try {
+
+            
+            let vendorId;
+            const token = req.cookies.vendorJWT
+            if(token){
+                const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload;
+                vendorId = decoded.id;
+            }
+            console.log(vendorId,'vendorid')
+            const {currentPassword,newPassword} = req.body
+            
+            console.log(currentPassword,newPassword);
+            const changePassword = await this.parlourcase.editVendorPassword(vendorId,currentPassword,newPassword)
+            res.status(200).json(changePassword)
+
+        
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+async editVendorEmail(req:Request,res:Response){
+    try {
+        let vendorId;
+        const token = req.cookies.vendorJWT
+        if(token){
+            const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload;
+            vendorId = decoded.id;
+        }
+        const email = req.body.email
+        console.log('controller,',email);
+        const vendorData = await this.parlourcase.editVendorEmail(vendorId,email)
+        if(!vendorData.data.data){
+            req.app.locals.vendor = {email}
+            req.app.locals = vendorData?.data?.otp;
+            res.status(200).json(vendorData?.data)
+        }else{
+            res.status(200).json({data:true})
+        }
+
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
     async vendorLogout(req:Request,res:Response){
         try {
             res.cookie('vendorJWT', '', {

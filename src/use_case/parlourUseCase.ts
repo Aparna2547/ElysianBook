@@ -231,6 +231,63 @@ async findParlourById (vendorId:string){
         
     }
 }
+async vendorProfile(vendorId:string){
+    try {
+        const vendorFound = await this.parlourRepository.findVendorById(vendorId)
+        return {
+            status:200,
+            data:vendorFound
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async editVendorName(vendorId:string,name:string){
+    try {
+        console.log('inside editVendorName usecase');
+        const changeName = await this.parlourRepository.editVendorName(vendorId,name)
+        return {
+            status:200,
+            data:changeName
+        }
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async editVendorPassword(vendorId:string,currentPassword:string,newPassword:string){
+    try {
+        console.log('usecase');
+        const vendorFound = await this.parlourRepository.findVendorById(vendorId)
+        // const hashcurrentpassword = await this.Encrypt.createHash(currentPassword)
+        const passwordMatch = await this.Encrypt.compare(currentPassword,vendorFound.password) 
+        if(passwordMatch){
+            const hashedPassword = await this.Encrypt.createHash(newPassword)
+            const changePassword = await this.parlourRepository.editVendorPassword(vendorId,hashedPassword);
+            return{
+                status:200,
+                data:changePassword
+            }
+        }else{
+            console.log('password current worng');
+            
+            return {
+                status:200,
+                data:{
+                    success:false
+                }
+            }
+        }
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 }
 
 export default ParlourUseCase

@@ -1,13 +1,13 @@
-import ServiceRepository from "./interface/serviceInterface"
+import IServiceRepository from "./interface/serviceInterface"
 import Cloudinary from "../infrastucture/utils/cloudinary"
 import { ObjectId } from "mongoose"
 
 class Serviceusecase{
-    private serviceRepository : ServiceRepository
+    private serviceRepository : IServiceRepository
     private cloudinary :Cloudinary
 
 
-    constructor(serviceRepository:ServiceRepository,cloudinary:Cloudinary){
+    constructor(serviceRepository:IServiceRepository,cloudinary:Cloudinary){
         this.serviceRepository = serviceRepository
         this.cloudinary  = cloudinary
     }
@@ -81,6 +81,30 @@ class Serviceusecase{
             
         } catch (error) {
             console.log(error);
+            
+        }
+    }
+
+    //editing
+    async editService(id:string,serviceName:string,category:ObjectId,duration:number,price:number,description:string,image:object){
+        try {
+            const serviceFound = await this.serviceRepository.findServiceById(id)
+            let imageLink;
+            if(image){
+                imageLink = await this.cloudinary.saveToCloudinary(image)
+                console.log(imageLink);
+                
+            }else{
+                imageLink = serviceFound.image
+            }
+
+            const editedData = await this.serviceRepository.editService(id,serviceName,category,duration,price,description,imageLink)
+            return{
+                status:200,
+                data:editedData
+            }
+        } catch (error) {
+         console.log(error);
             
         }
     }

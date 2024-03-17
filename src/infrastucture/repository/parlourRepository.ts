@@ -60,6 +60,32 @@ class parlourRepository implements IParlourRepository {
 
     console.log("enthnna");
   }
+
+
+   async findVendorById(vendorId: string): Promise<any> {
+    console.log('repo profile');
+    const profileDetails = await ParlourModel.findOne({_id:vendorId},{name:1,email:1,parlourName:1,status:1,password:1,vendorImage:1})
+    // console.log(profileDetails);
+    
+    return profileDetails
+    
+  }
+
+  async editVendorName(vendorId:string,name:string){
+    console.log('ayuo');
+    
+    const nameChangeStatus = await ParlourModel.findByIdAndUpdate(vendorId,{$set:{name}})
+    console.log(nameChangeStatus);
+    return nameChangeStatus
+    
+  }
+
+  async editVendorPassword(vendorId:string,hashedPassword:string){
+    const changePasswordStatus = await ParlourModel.findByIdAndUpdate(vendorId,{$set:{password:hashedPassword}})
+    console.log('password changed');
+    
+    return changePasswordStatus
+  }
 }
 
 export default parlourRepository;

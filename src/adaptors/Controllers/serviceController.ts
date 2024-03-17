@@ -55,6 +55,25 @@ class serviceController{
     }
   }
 
+  //edit services
+  async editService(req:Request,res:Response){
+    try {
+      console.log("inside edit service controller")
+      const serviceName = req.body.serviceName;
+      console.log('servicename:' ,serviceName)
+      const {category,duration,price,description} = req.body;
+      const id = req.query.id as string
+      const image = req.file as object
+      console.log(id,serviceName,category,duration,price,description,image);
+      const serviceFound = await this.servicecase.editService(id,serviceName,category,duration,price,description,image)
+      res.status(200).json(serviceFound)
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   //list services
   async listService(req:Request,res:Response){
     try { 

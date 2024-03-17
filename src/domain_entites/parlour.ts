@@ -3,6 +3,7 @@ interface Parlour{
     name:string,
     email:string,
     password:string,
+    vendorImage:string,
     isBlocked:boolean,
     parlourName:string,
     landmark:string,
@@ -16,7 +17,8 @@ interface Parlour{
     longitude:number,
     facilities:string[],
     banners:string[],
-    status:string
+    status:string,
+    
 }
 
 export default Parlour

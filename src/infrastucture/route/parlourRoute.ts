@@ -35,7 +35,11 @@ router.post('/vendorPasswordChange',(req,res)=>controller.vendorPasswordChange(r
 
 
 router.post('/addParlour',protect,multerMid.array('banners',3),(req,res)=>controller.addParlour(req,res))
-router.get('/getParlourDetails',protect,(req,res)=>controller.getParlour(req,res))
+router.get('/getParlourDetails',protect,(req,res)=>controller.getParlour(req,res));
+router.get('/vendorProfile',(req,res)=>controller.vendorProfile(req,res))
+router.put('/editVendorName',protect,(req,res)=>controller.editVendorName(req,res))
+router.put('/editVendorPassword',protect,(req,res)=>controller.editVendorPassword(req,res))
+router.put('/editVendorEmail',protect,(req,res)=>controller.editVendorEmail(req,res))
 router.post('/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 
 
@@ -57,8 +61,8 @@ const servicecontroller = new serviceController(serviceusecase)
 router.get('/allServices',protect,(req,res)=>servicecontroller.showAllServices(req,res))
 router.post('/addService',protect,multerMid.single('image'),(req,res)=>servicecontroller.addService(req,res))
 router.get('/categoriesToShow',protect,(req,res)=>servicecontroller.categoriesToShow(req,res))
-// router.post('/editService',protect,(req,res)=>servicecontroller.editService(req,res))
-router.put('/listServicelistService',protect,(req,res)=>servicecontroller.listService(req,res))
+router.put('/editService',protect,multerMid.single('image'),(req,res)=>servicecontroller.editService(req,res))
+router.put('/listService',protect,(req,res)=>servicecontroller.listService(req,res))
 
 
 
