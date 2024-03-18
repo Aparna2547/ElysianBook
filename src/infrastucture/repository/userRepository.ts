@@ -63,6 +63,31 @@ class userRepository implements IUserRepository{
         
      }   
     }
+
+    async findById(userId:string){
+        const profileDetails = await UserModel.findById(userId)
+        return profileDetails
+    }
+
+     async editUser(userId: string, user: User): Promise<any> {
+        const userEdit = await UserModel.findByIdAndUpdate(userId,user)
+        console.log('edited');
+        
+        return userEdit
+    }
+
+    async deleteProfilePicture(userId:string,image:string){
+        const deleteImage = await UserModel.updateOne({_id:userId},
+            {$set:{image:''}})
+        return deleteImage
+    }
+
+    async saveProfileImage(userId:string,imageLink:string){
+        const imageChange = await UserModel.findOne({_id:userId},
+            {$set:{image:imageLink}}
+            )
+            return imageChange;
+    }
 }
 
 export default userRepository

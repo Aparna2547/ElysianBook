@@ -5,8 +5,17 @@ interface IUserRepository{
     findByEmail(email:string):Promise<any>,
     changePassword(email:string,password:string):Promise<any>,
     getParloursToShow(page:number):Promise<any>,
-    getSingleParlourDetails(id:string):Promise<any>
+    getSingleParlourDetails(id:string):Promise<any>,
+    findById(userId:string):Promise<any>,
+    editUser(userId:string,user:User):Promise<any>,
+    deleteProfilePicture(userId:string,image:string):Promise<any>,
+    saveProfileImage(userId:string,imageLink:string):Promise<any>
+    
+
+
+
 }
+
 
 
 export default IUserRepository

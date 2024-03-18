@@ -23,6 +23,8 @@ class parlourRepository implements IParlourRepository {
 
   async findParlourById(parlour: string) {
     const parlourFound = await ParlourModel.findById(parlour);
+    console.log(parlourFound);
+    
     return parlourFound;
   }
 
@@ -62,6 +64,30 @@ class parlourRepository implements IParlourRepository {
   }
 
 
+  async editParlour(vendorId:string,parlourData:Parlour){
+    
+    const parlourEdit = await ParlourModel.findByIdAndUpdate(vendorId, {
+      $set: {
+        parlourName: parlourData.parlourName,
+        landmark: parlourData.landmark,
+        locality: parlourData.locality,
+        district: parlourData.district,
+        openingTime: parlourData.openingTime,
+        closingTime: parlourData.closingTime,
+        contact: parlourData.contact,
+        seats: parlourData.seats,
+        latitude: parlourData.latitude,
+        longitude: parlourData.longitude,
+        facilities: parlourData.facilities,
+        banners: parlourData.banners,
+        status:"Pending"
+      },
+    });
+    console.log("Parlour details saved successfully");
+    return parlourEdit
+
+
+  }
    async findVendorById(vendorId: string): Promise<any> {
     console.log('repo profile');
     const profileDetails = await ParlourModel.findOne({_id:vendorId},{name:1,email:1,parlourName:1,status:1,password:1,vendorImage:1})
@@ -85,6 +111,12 @@ class parlourRepository implements IParlourRepository {
     console.log('password changed');
     
     return changePasswordStatus
+  }
+
+
+  async editVendor(vendor:Parlour,vendorId:string) {
+    const vendorEdit = await ParlourModel.findByIdAndUpdate(vendorId,vendor)
+    return vendorEdit
   }
 }
 

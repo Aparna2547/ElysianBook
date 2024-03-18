@@ -3,7 +3,8 @@ interface User{
     name:string,
     email:string,
     password:string,
-    isBlocked:boolean
+    isBlocked:boolean,
+    image:string
 }
 
 export default User

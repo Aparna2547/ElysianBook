@@ -169,8 +169,9 @@ class parlourController{
                 
                 console.log('parlour adding in controller');
                 
-                const parlourDetails = req.body
+                const parlourDetails = req.body 
                 const banners = req.files as Object
+                console.log(typeof(parlourDetails))
                 
                 parlourDetails.banners = banners
                 
@@ -181,6 +182,30 @@ class parlourController{
                 
         } catch (error) {
             console.log(error)
+        }
+    }
+
+
+    //edit parlour
+    async editParlour(req:Request,res:Response){
+        try {
+            const token = req.cookies.vendorJWT
+                
+                const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
+                const vendorId = decoded.id;
+            console.log('njn vannee',vendorId)
+            const parlourDetails = req.body 
+            const banners = req.files as Object
+            parlourDetails.banners = banners
+            console.log('type',typeof(parlourDetails));
+            
+
+            const editParlourStatus = await this.parlourcase.editParlour(vendorId,parlourDetails)
+            res.status(200).json(editParlourStatus)
+
+        } catch (error) {
+            console.log(error);
+            
         }
     }
 
@@ -257,6 +282,11 @@ class parlourController{
             
             console.log(currentPassword,newPassword);
             const changePassword = await this.parlourcase.editVendorPassword(vendorId,currentPassword,newPassword)
+            res.cookie('vendorJWT', '', {
+                httpOnly: true,
+                expires: new Date(0)
+            })
+            // res.status(200).json({success:true})
             res.status(200).json(changePassword)
 
         
@@ -276,18 +306,46 @@ async editVendorEmail(req:Request,res:Response){
             const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload;
             vendorId = decoded.id;
         }
+        
         const email = req.body.email
         console.log('controller,',email);
         const vendorData = await this.parlourcase.editVendorEmail(vendorId,email)
-        if(!vendorData.data.data){
-            req.app.locals.vendor = {email}
-            req.app.locals = vendorData?.data?.otp;
+        if(vendorData && vendorData.data && !vendorData.data.data){
+            req.app.locals.vendor = email
+            req.app.locals.vendorId = vendorId
+            req.app.locals.otp = vendorData?.data?.otp; 
             res.status(200).json(vendorData?.data)
         }else{
             res.status(200).json({data:true})
         }
 
         
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+}
+
+async editVendorEmailOtp(req:Request,res:Response){
+    try {
+        const otpBody = req.body.otp;
+        console.log(otpBody)
+        const otpSaved:string = req.app.locals.otp
+            console.log("optsa",otpBody,otpSaved);
+            if(otpBody===otpSaved){
+                // let vendorId;
+                // const token = req.cookies.vendorJWT
+                // if(token){
+                //     const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload;
+                //     vendorId = decoded.id;
+                // } 
+                const email = req.app.locals.vendor
+                const vendorId = req.app.locals.vendorId
+                console.log(email,vendorId)
+                const editEmail = await this.parlourcase.editVendorEmailSave(vendorId,email);
+                return res.status(200).json(editEmail)
+            }
     } catch (error) {
         console.log(error);
         

@@ -22,6 +22,9 @@ const userSchema : Schema<User> = new mongoose.Schema({
     isBlocked:{
         type:Boolean,
         default:false
+    },
+    image:{
+      type:String  
     }
 
 })

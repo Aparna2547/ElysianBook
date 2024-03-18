@@ -218,7 +218,27 @@ async addParlourDetails (parlourData:any,vendorId:string){
     return parlourStatus
 }
 
-
+async editParlour(vendorId:string,parlourData:any){
+    try {
+        const uploadBanners = await Promise.all(
+            parlourData.banners.map(async (file:any)=>{
+                return await this.Cloudinary.saveToCloudinary(file)
+            })
+        );
+    
+        parlourData.banners = uploadBanners;
+        parlourData._id = vendorId
+        console.log('helloo',parlourData);
+        
+        
+    
+        const parlourStatus = await this.parlourRepository.editParlour(vendorId,parlourData)
+        return parlourStatus
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 async findParlourById (vendorId:string){
     try {
         const parlourFound  = await this.parlourRepository.findParlourById(vendorId)
@@ -288,6 +308,50 @@ async editVendorPassword(vendorId:string,currentPassword:string,newPassword:stri
         
     }
 }
+async editVendorEmail(vendorId: string, email: string) {
+    try {
+        console.log('parlourcase email');
+        
+        const vendorFound = await this.parlourRepository.findVendorById(vendorId)
+        if (vendorFound) {
+            const otp = await this.otpGen.genOtp(4)
+            console.log(otp)
+            const mailDetails = await this.sendOtp.forgotSendMail(email, otp)
+            return {
+                status: 200,
+                data: {
+                    data: false,
+                    otp: otp
+                }
+            }
+        } else {
+            return {
+                status: 200,
+                data: {
+                    data: true
+                }
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return { status: 500, error: 'Internal Server Error' }; // Return an error object
+    }
+}
+async editVendorEmailSave(vendorId:string,email:string){
+    try {
+        let vendorFound = await this.parlourRepository.findVendorById(vendorId)
+        vendorFound.email = email
+        const emailEdit = await this.parlourRepository.editVendor(vendorFound,vendorId)
+        return{
+            status:200,
+            data:emailEdit
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }
 
 export default ParlourUseCase

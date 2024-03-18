@@ -4,6 +4,8 @@ import otpGen from "../infrastucture/utils/otpGen";
 import sendOtp from "../infrastucture/utils/sendMail";
 import Encrypt from "../infrastucture/utils/hashPassword";
 import JWTtokens from "../infrastucture/utils/JWTtokens"
+import Cloudinary from "../infrastucture/utils/cloudinary";
+
 
 
 class Userusecase{
@@ -13,16 +15,18 @@ class Userusecase{
     private sendOtp:sendOtp;
     private Encrypt:Encrypt;
     private JWTtokens:JWTtokens;
+    private cloudinary:Cloudinary
 
 
 
     constructor(userRepository:IUserRepository, sendOtp:sendOtp,
-        otpGen:otpGen,Encrypt:Encrypt,JWTtokens:JWTtokens){
+        otpGen:otpGen,Encrypt:Encrypt,JWTtokens:JWTtokens,cloudinary:Cloudinary){
         this.userRepository = userRepository
         this.sendOtp = sendOtp
         this.otpGen=otpGen
         this.Encrypt = Encrypt
         this.JWTtokens = JWTtokens;
+        this.cloudinary = cloudinary
     }
 
 
@@ -227,7 +231,148 @@ class Userusecase{
         }
     }
 
+    async userProfile(userId:string){
+        try {
+            const userFound = await this.userRepository.findById(userId)
+            return{
+                status:200,
+                data:userFound
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async changeUserName (userId:string,name:string){
+        try {
+            console.log('use');
+            
+            let userFound = await this.userRepository.findById(userId)
+            userFound.name = name;
+            const changeName = await this.userRepository.editUser(userId,userFound)
+
+
+            return{
+                status:200,
+                data: changeName
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+    async changeUserPassword (userId:string,currentPassword:string,newPassword:string){
+        try {
+            const userFound = await this.userRepository.findById(userId)
+            const passwordMatch = await this.Encrypt.compare(currentPassword,userFound.password) 
+            if(passwordMatch){
+                const hashedPassword = await this.Encrypt.createHash(newPassword)
+                userFound.password = hashedPassword
+                const changePassword = await this.userRepository.editUser(userId,userFound);
+                return{
+                    status:200,
+                    data:changePassword
+                }
+            }else{
+                console.log('password current worng');
+                
+                return {
+                    status: 400,
+                    error: 'Current password is incorrect'
+                };
+            }
+        } catch (error) {
+            
+        }
+    }
+    
+
+    async changeUserEmail( email: string) {
+        try {
+            console.log('usercase email');
+            
+            const userFound = await this.userRepository.findByEmail(email)
+            if (!userFound) {
+                const otp = await this.otpGen.genOtp(4)
+                console.log(otp)
+                const mailDetails = await this.sendOtp.forgotSendMail(email, otp)
+                return {
+                    status: 200,
+                    data: {
+                        data: false,
+                        otp: otp
+                    }
+                }
+            } else {
+                return {
+                    status: 200,
+                    data: {
+                        data: true
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            return { status: 500, error: 'Internal Server Error' }; // Return an error object
+        }
+    }
+
+    
+async changeUserEmailSave(userId:string,email:string){
+    try {
+        let userFound = await this.userRepository.findById(userId)
+        userFound.email = email
+        const emailEdit = await this.userRepository.editUser(userId,userFound)
+        return{
+            status:200,
+            data:emailEdit
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
 }
+
+async deleteProfilePicture(userId:string){
+    try {
+        const userFound = await this.userRepository.findById(userId)
+        const image = userFound.image
+        const imageDelete = await this.userRepository.deleteProfilePicture(userId,image)
+        return{
+            status:200,
+            data:imageDelete
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+async changeProfilePicture(userId:string,image:object){
+    try {
+        const userFound = await this.userRepository.findById(userId)
+        if(userFound){
+            const imageLink = await this.cloudinary.saveToCloudinary(image)
+          console.log(imageLink);
+
+          const imageSave  = await this.userRepository.saveProfileImage(userId,imageLink)
+          return {
+            status:200,
+            data:imageSave
+          }
+
+          
+
+
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+}
+
 
 
 
