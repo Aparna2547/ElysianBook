@@ -231,6 +231,8 @@ class Userusecase{
         }
     }
 
+
+
     async userProfile(userId:string){
         try {
             const userFound = await this.userRepository.findById(userId)

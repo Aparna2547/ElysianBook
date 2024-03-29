@@ -20,7 +20,7 @@ class adminRepository implements IAdminRepository {
     try {
       console.log("alll users");
       // const showUser = await UserModel.find();
-      const limit = 5
+      const limit = 4
       let skip = (page - 1)* limit;
       let totalUsers = await UserModel.find({}).countDocuments();
       let totalPages = Math.floor(totalUsers/limit)
@@ -46,25 +46,33 @@ class adminRepository implements IAdminRepository {
     // user.isBlocked = !user?.isBlocked
     // await user.save()
     // console.log(user);
-    if (user) {
-      let userStatus;
-      if (user.isBlocked === false) {
-        console.log("user is unblocked");
-        userStatus = await UserModel.updateOne(
-          { _id: id },
-          { $set: { isBlocked: true } }
-        );
-      } else {
-        userStatus = await UserModel.updateOne(
-          { _id: id },
-          { $set: { isBlocked: false } }
-        );
-      }
-      return userStatus;
-    } else {
-      return null;
-    }
+    // if (user) {
+    //   let userStatus;
+    //   if (user.isBlocked === false) {
+    //     console.log("user is unblocked");
+    //     userStatus = await UserModel.updateOne(
+    //       { _id: id },
+    //       { $set: { isBlocked: true } }
+    //     );
+    //   } else {
+    //     userStatus = await UserModel.updateOne(
+    //       { _id: id },
+    //       { $set: { isBlocked: false } }
+    //     );
+    //   }
+    //   return userStatus;
+    // } else {
+    //   return null;
+    // }
     // return user
+
+
+    if(user){
+      user.isBlocked = !user.isBlocked
+      await user.save();
+      console.log((user));
+      
+    }
   }
 
   //list all vendors
@@ -72,7 +80,7 @@ class adminRepository implements IAdminRepository {
     console.log("all vendors-usecase");
     // const showVendors = await ParlourModel.find();
 
-    const limit = 5;
+    const limit = 4;
     let skip = (page - 1)* limit;
     let totalParlours = await ParlourModel.find({}).countDocuments()
     let totalPages = Math.floor(totalParlours/limit);
@@ -91,24 +99,31 @@ class adminRepository implements IAdminRepository {
   //block vendor
   async blockVendor(id: string) {
     console.log("inside repo");
-    const vendorDetails = await ParlourModel.findById(id);
-    if (vendorDetails) {
-      let vendorStatus;
-      if (vendorDetails.isBlocked === false) {
-        console.log("vendor is unblocked");
-        vendorStatus = await ParlourModel.updateOne(
-          { _id: id },
-          { $set: { isBlocked: true } }
-        );
-      } else {
-        vendorStatus = await ParlourModel.updateOne(
-          { _id: id },
-          { $set: { isBlocked: false } }
-        );
-      }
-      return vendorStatus;
-    } else {
-      return null;
+    const vendor = await ParlourModel.findById(id);
+    // if (vendorDetails) {
+    //   let vendorStatus;
+    //   if (vendorDetails.isBlocked === false) {
+    //     console.log("vendor is unblocked");
+    //     vendorStatus = await ParlourModel.updateOne(
+    //       { _id: id },
+    //       { $set: { isBlocked: true } }
+    //     );
+    //   } else {
+    //     vendorStatus = await ParlourModel.updateOne(
+    //       { _id: id },
+    //       { $set: { isBlocked: false } }
+    //     );
+    //   }
+    //   return vendorStatus;
+    // } else {
+    //   return null;
+    // }
+
+    if(vendor){
+      vendor.isBlocked = !vendor.isBlocked
+      await vendor.save();
+      console.log(vendor);
+      
     }
   }
 

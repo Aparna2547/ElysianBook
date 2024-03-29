@@ -14,7 +14,7 @@ class Serviceusecase{
 
 
 
-    async addService(serviceName:string,category:ObjectId,duration:string,description:string,price:number,image:object){
+    async addService(venodrId:string,serviceName:string,category:ObjectId,duration:number,description:string,price:number,image:object){
         try {
             console.log('service add usecase')
             const serviceFound = await this.serviceRepository.findService(serviceName);
@@ -29,7 +29,7 @@ class Serviceusecase{
                 const imageLink = await this.cloudinary.saveToCloudinary(image)
                 console.log(imageLink);
 
-                const serviceSave = await this.serviceRepository.saveService(serviceName,category,duration,description,price,imageLink)
+                const serviceSave = await this.serviceRepository.saveService(venodrId,serviceName,category,duration,description,price,imageLink)
                 return{
                     status:200,
                     data:serviceSave
@@ -55,10 +55,10 @@ class Serviceusecase{
         }
     }
 
-    async showAllServices(search:string,page:number){
+    async showAllServices(vendorId:string,search:string,page:number){
         try {
             console.log('inside allsercice usecase');
-            const showAllServices = await this.serviceRepository.showAllServices(search,page);
+            const showAllServices = await this.serviceRepository.showAllServices(vendorId,search,page);
             return{
                 status:200,
                 data:showAllServices
@@ -105,6 +105,21 @@ class Serviceusecase{
             }
         } catch (error) {
          console.log(error);
+            
+        }
+    }
+
+
+    async getServicesInUser(id:string){
+        try {
+            console.log('in usecase')
+            const servicesInUser  = await this.serviceRepository.getServicesInUser(id)
+            return {
+                status:200,
+                data:servicesInUser
+            }
+        } catch (error) {
+            console.log(error);
             
         }
     }

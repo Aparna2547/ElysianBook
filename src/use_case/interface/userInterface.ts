@@ -1,7 +1,7 @@
 import User from "../../domain_entites/user"
 
 interface IUserRepository{
-    saveUser(user:User):Promise<any>,
+    saveUser(user:User):Promise<User>,
     findByEmail(email:string):Promise<any>,
     changePassword(email:string,password:string):Promise<any>,
     getParloursToShow(page:number):Promise<any>,

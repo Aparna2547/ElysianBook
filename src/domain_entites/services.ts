@@ -2,6 +2,7 @@ import { ObjectId } from "mongoose";
 
 interface Services{
   id?:string,
+  vendorId:ObjectId |string,
   serviceName:string,
   category:ObjectId | string,
   duration:number,

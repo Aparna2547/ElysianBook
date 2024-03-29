@@ -4,6 +4,10 @@ import Services from "../../domain_entites/services";
 
 
 const serviceSchema : Schema<Services> = new mongoose.Schema({
+    vendorId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'parlour'
+    },
     serviceName:{
         type:String,
     },
@@ -16,7 +20,7 @@ const serviceSchema : Schema<Services> = new mongoose.Schema({
     },
     isListed:{
         type:Boolean,
-        default:false
+        default:true
     },
     description:{
         type:String

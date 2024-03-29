@@ -44,7 +44,7 @@ class categoryRepository implements ICategoryRepository{
     async getCat(search:string,page:number){
         try {
 console.log('repository')
-            let limit = 5;
+            let limit = 4;
             let skip = (page -1) * limit;
             let totalCategories = await CategoryModel.find({}).countDocuments();
             let totalPages = Math.floor(totalCategories/limit)

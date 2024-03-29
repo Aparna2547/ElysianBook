@@ -1,5 +1,6 @@
 import {Request,Response} from "express"
 import Serviceusecase from "../../use_case/serviceUseCase"
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 
 
@@ -12,7 +13,15 @@ class serviceController{
   async addService(req:Request,res:Response){
     try {
         console.log('inside service controller');
-        // console.log(req.body);
+
+        let vendorId;
+        const token = req.cookies.vendorJWT
+        if(token){
+            const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
+            vendorId = decoded.id
+        }
+  
+        console.log(vendorId);
         
         const image= req.file as object;
         
@@ -20,7 +29,7 @@ class serviceController{
 
         console.log('cate',category)
 
-        const newService = await this.servicecase.addService(serviceName,category,duration,description,price,image)
+        const newService = await this.servicecase.addService(vendorId,serviceName,category,duration,description,price,image)
         res.status(200).json(newService)
         
     } catch (error) {
@@ -42,10 +51,19 @@ class serviceController{
   //display all services
   async showAllServices(req:Request,res:Response){
     try {
+
+      let vendorId;
+      const token = req.cookies.vendorJWT
+      if(token){
+          const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
+          vendorId = decoded.id
+      }
+
+
       console.log('show all services controller');
       const search = req.query.search as string
       const page = parseInt(req.query.page as string)
-      const showAllServices = await this.servicecase.showAllServices(search,page)
+      const showAllServices = await this.servicecase.showAllServices(vendorId,search,page)
       res.status(200).json(showAllServices)
       
       
@@ -87,6 +105,23 @@ class serviceController{
       
     }
   }
+
+  async getServicesInUser(req:Request,res:Response){
+    try {
+        console.log('helo category')
+        const id = req.query.id as string
+        console.log('id',id)
+        const showService = await this.servicecase.getServicesInUser(id)
+        res.status(200).json(showService)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+
+
 }
 
 export default serviceController

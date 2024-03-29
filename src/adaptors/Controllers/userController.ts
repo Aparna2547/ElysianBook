@@ -17,6 +17,98 @@ import { JwtPayload } from "jsonwebtoken";
 
 
 
+        // async verifyEmail(req: Request, res: Response) {
+        //     try {
+        //         const { email, password, name } = req.body;
+
+        //         const userData:any = await this.usercase.findUser(name, email, password);
+        //         console.log(userData);
+                
+
+                
+        //         if (!userData.data.data) {                    
+        //             // req.app.locals.user = {email,name,password};
+        //             // req.app.locals.otp = userData?.data?.otp;
+        //             // console.log(req.app.locals);
+        //             const otp = userData.data.otp;
+        //             const jwtKey = process.env.JWT_KEY
+        //             const user = req.body
+        //             const payload = {user, otp};
+        //             let token;
+        //             if (jwtKey) {
+        //                  token = jwt.sign(payload, jwtKey);
+        //             } else {
+        //                 // Handle the case where jwtKey is undefined
+        //                 console.error("JWT key is undefined");
+        //             }
+        //             console.log('jwt',jwt,email,name,otp)
+        //             // res.status(200).json(userData?.data);
+        //             res.status(200).json({token});
+        //         } else {
+        //             res.status(409).json({ data: true });
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //         res.status(500).json({ message: "Internal Server Error" });
+        //     }
+        // }
+
+
+
+        // async verifyOtp(req: Request, res: Response) {
+        //     console.log('heloo')
+        // try {
+        //     const token = req.headers.authorization?.split(' ')[1];
+        //     console.log(token);
+        
+
+                
+        // if (!token) {
+        //     return res.status(401).json({ message: "Unauthorized" });
+        // }
+
+        // const jwtKey = process.env.JWT_KEY;
+
+        // if (!jwtKey) {
+        //     return res.status(500).json({ message: "JWT key is not defined" });
+        // }
+
+        // // Verify the JWT token
+        // const decoded = jwt.verify(token, jwtKey);
+        //     const { email, otp } = decoded as { email: string; otp: string };
+        //     console.log(email,otp)
+        //         // const otpBody: string = req.body.otp;
+        //         // const otpSaved: string = req.app.locals.otp;
+        //         // console.log('jkjk',otpBody,otpSaved)
+
+                 
+        //           // Verify the JWT token
+        //             //  let jwtKey = process.env.JWT_KEY
+        //             // const decoded = jwt.verify(token, jwtKey);
+
+        //             // Extract email and OTP from decoded token
+        //         //     const { email, otp } = decoded as { email: string; otp: string };
+
+                
+        //         // if (req.body.otp === otp) {
+        //             // const user = req.app.locals.user;
+
+        //             // const save = await this.usercase.saveUser(user);
+        //             // if (save) {
+        //             //     console.log('save',save);
+        //             //     return res.status(save.status).json(save);
+        //             // } else {
+        //             //     return res.status(400).json({ message: "Invalid otp" });
+        //             // }
+        //         // }
+        //     } catch (error) {
+        //         console.log(error);
+        //         res.status(500).json({ message: "Internal Server Error" });
+        //     }
+        // }
+
+
+        //verify email
         async verifyEmail(req: Request, res: Response) {
             try {
                 const { email, password, name } = req.body;
@@ -26,7 +118,7 @@ import { JwtPayload } from "jsonwebtoken";
                 if (!userData.data.data) {                    
                     req.app.locals.user = {email,name,password};
                     req.app.locals.otp = userData?.data?.otp;
-                    console.log(req.app.locals);
+                    console.log('dfhfs',req.app.locals.user);
                     res.status(200).json(userData?.data);
                 } else {
                     res.status(409).json({ data: true });
@@ -37,26 +129,46 @@ import { JwtPayload } from "jsonwebtoken";
             }
         }
 
-
+        //verify otp
 
         async verifyOtp(req: Request, res: Response) {
             try {
                 const otpBody: string = req.body.otp;
                 const otpSaved: string = req.app.locals.otp;
-                // console.log('jkjk',otpBody,otpSaved)
+                console.log('jkjk',otpBody,otpSaved)
                 if (otpBody === otpSaved) {
                     const user = req.app.locals.user;
                     const save = await this.usercase.saveUser(user);
                     if (save) {
                         console.log('save',save);
                         return res.status(save.status).json(save);
-                    } else {
-                        return res.status(400).json({ message: "Invalid otp" });
-                    }
+                    } 
+                }
+                else {
+                    return res.status(200).json({ message: "Invalid otp" });
                 }
             } catch (error) {
                 console.log(error);
                 res.status(500).json({ message: "Internal Server Error" });
+            }
+        }
+
+
+
+        //    //resend otp
+            async resendOtp(req:Request,res:Response){
+                try {
+                    console.log('resend otp')
+                    const { email, name, password } = req.app.locals.user;
+                    const userData:any = await this.usercase.findUser(name, email, password);
+                    console.log(userData);
+                        let otpSaved = userData?.data?.otp;
+                        req.app.locals.otp = otpSaved
+                        console.log(req.app.locals)
+                       res.status(200).json(true)
+            } catch (error) {
+                console.log(error);
+                
             }
         }
 
@@ -79,7 +191,6 @@ import { JwtPayload } from "jsonwebtoken";
             try {
                 console.log('userController');
                 // const user = req.body
-                // taking credentials from user
                 const user = await this.usercase.logIn(req.body);
         
                 // Check if user is defined before accessing its properties
@@ -91,7 +202,6 @@ import { JwtPayload } from "jsonwebtoken";
                         maxAge: 30 * 24 * 60 * 60 * 1000,
                     });
                 }
-        
                 res.status(user!.status).json(user!.data); // Use non-null assertion operator
         
             } catch (error) {
@@ -99,6 +209,8 @@ import { JwtPayload } from "jsonwebtoken";
             }
         }
         
+
+     
 
     //forgot password
     async forgotPasswordEmail(req:Request,res:Response){
@@ -164,7 +276,7 @@ async passwordChange(req:Request,res:Response){
 //show all parlour
 async parloursToShow(req:Request,res:Response){
     try {
-        console.log('get all parlours')
+        // console.log('get all parlours')
         const page = parseInt(req.query.page as string) 
 
         
@@ -180,7 +292,7 @@ async singleParlourDetails(req:Request,res:Response){
     try {
     
         const id= req.params.id;
-        console.log('afa',id)
+        // console.log('afa',id)
         const singleParlourStatus = await this.usercase.singleParlourDetails(id)
         res.status(200).json(singleParlourStatus)
     } catch (error) {
@@ -188,6 +300,9 @@ async singleParlourDetails(req:Request,res:Response){
         
     }
 }
+
+
+
 
 
 async userProfile(req:Request,res:Response){
@@ -335,6 +450,19 @@ async changeUserPassword(req:Request,res:Response){
         }
     }
     
+
+
+    // //to get all services from a parlour
+    // async getAllServices (req:Request,res:Response){
+    //     console.log('inside parlour service')
+    //     const id = req.params.id
+    //     console.log('id',id)
+    // }
+
+
+
+
+
 
             //user logout
             async logout(req:Request,res:Response){

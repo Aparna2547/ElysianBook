@@ -43,7 +43,7 @@ class userRepository implements IUserRepository{
 
     
     async getParloursToShow(page:number){
-        let limit = 3
+        let limit = 6   
         let skip = (page - 1)* limit
         const totalParlours = await ParlourModel.find({status:{$eq:"Active"}}).countDocuments()
         const totalPages = Math.floor(totalParlours/limit)

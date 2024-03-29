@@ -26,6 +26,7 @@ const router = express.Router()
 
 router.post('/verifymail',(req,res)=>controller.verifyEmail(req,res))
 router.post('/signup',(req,res)=>controller.verifyOtp(req,res))
+router.post('/resendotp',(req,res)=>controller.resendOtp(req,res))  
 router.post('/gsignup',(req,res)=>controller.gsignup(req,res))
 router.post('/login',(req,res)=>controller.logIn(req,res))
 router.post('/forgotpassword',(req,res)=>controller.forgotPasswordEmail(req,res))
@@ -33,9 +34,7 @@ router.post('/verifyOtpForgotPassword',(req,res)=>controller.verifyOtpForgotPass
 router.post('/passwordChange',(req,res)=>controller.passwordChange(req,res))
 router.post('/logout',(req,res)=>controller.logout(req,res))
 
-//palour show
-router.get('/allParlours',(req,res)=>controller.parloursToShow(req,res))
-router.get('/parlourDetails/:id',protect,(req,res)=>controller.singleParlourDetails(req,res))
+//profile
 router.get('/profile',protect,(req,res)=>controller.userProfile(req,res))
 router.put('/changeUserName',protect,(req,res)=>controller.changeUserName(req,res))
 router.put('/changeUserPassword',protect,(req,res)=>controller.changeUserPassword(req,res))
@@ -43,6 +42,40 @@ router.put('/changeUserEmail',protect,(req,res)=>controller.changeUserEmail(req,
 router.put('/changeUserEmailSave',protect,(req,res)=>controller.changeUserEmailSave(req,res))
 router.put('/deleteProfilePicture',protect,(req,res)=>controller.deleteProfilePicture(req,res))
 router.put('/changeProfilePicture' , protect,(req,res)=>controller.changeProfilePicture(req,res))
+
+
+//palour show
+router.get('/allParlours',(req,res)=>controller.parloursToShow(req,res))
+router.get('/parlourDetails/:id',protect,(req,res)=>controller.singleParlourDetails(req,res))
+
+
+// ---------------------------------------------------------------------------------------------------
+
+//services
+import serviceController from "../../adaptors/Controllers/serviceController"
+import serviceRepository from "../repository/serviceRepository"
+import serviceUsecase from "../../use_case/serviceUseCase"
+
+
+const servicerepository = new serviceRepository()
+const serviceusecase = new serviceUsecase(servicerepository,cloudinary);
+const servicecontroller = new serviceController(serviceusecase)
+
+
+router.get('/getServices',(req,res)=>servicecontroller.getServicesInUser(req,res))
+
+// ---------------------------------------------bookings-----------------------------------------------------------
+import bookingController from "../../adaptors/Controllers/bookingController";
+import bookingUsecase from "../../use_case/bookingUseCase";
+import bookingRepository from "../repository/bookingRepository";
+
+const bookingrepository = new bookingRepository()
+const bookingusecase = new bookingUsecase(bookingrepository)
+const bookingcontroller = new bookingController(bookingusecase)
+
+//taking detaiks
+router.post('/createBooking',protect,(req,res)=>bookingcontroller.createBooking(req,res))
+
 
 
 
