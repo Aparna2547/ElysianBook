@@ -12,7 +12,7 @@ export const createServer = () =>{
         app.use(express.urlencoded({ extended: true }))
         app.use(cookieParser())
 
-
+        var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
         //cors
         app.use(

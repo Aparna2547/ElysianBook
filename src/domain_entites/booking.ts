@@ -10,6 +10,9 @@ interface Bookings{
     date:Date,
     totalPrice:number,
     services:object;
+    status:string;
+    seatNo:number;
+    paymentId:string
 }
 
 export default Bookings

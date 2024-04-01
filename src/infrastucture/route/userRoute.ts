@@ -68,13 +68,21 @@ router.get('/getServices',(req,res)=>servicecontroller.getServicesInUser(req,res
 import bookingController from "../../adaptors/Controllers/bookingController";
 import bookingUsecase from "../../use_case/bookingUseCase";
 import bookingRepository from "../repository/bookingRepository";
+import StripePayment from "../utils/stripe";
+import SlotChecking from "../utils/SlotChecking";
+
+
 
 const bookingrepository = new bookingRepository()
-const bookingusecase = new bookingUsecase(bookingrepository)
+const stripePayment = new StripePayment()
+const slotChecking = new SlotChecking()
+const bookingusecase = new bookingUsecase(bookingrepository,stripePayment,slotChecking)
 const bookingcontroller = new bookingController(bookingusecase)
 
 //taking detaiks
-router.post('/createBooking',protect,(req,res)=>bookingcontroller.createBooking(req,res))
+router.post('/proceedForPayment',protect,(req,res)=>bookingcontroller.proceedForPayment(req,res))
+router.post('/confirmBooking',(req,res)=>bookingcontroller.confirmBooking(req,res))
+router.get('/allUserBooking',protect,(req,res)=>bookingcontroller.allUserBooking(req,res))
 
 
 

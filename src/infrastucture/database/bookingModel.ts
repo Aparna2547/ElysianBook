@@ -27,6 +27,16 @@ const bookingSchema : Schema<Bookings> = new mongoose.Schema({
     },
     services:{
         type:Object
+    },
+    status:{
+        type:String,
+        default:"confirmed"
+    },
+    seatNo:{
+        type:Number
+    },
+    paymentId:{
+        type:String
     }
 })
 
