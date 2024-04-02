@@ -105,6 +105,55 @@ class BookingUsecase{
         }
     }
 
+    async cancelBooking(bookingId:string,reason:string){
+        try {
+            const cancelBooking = await this.bookingRepository.cancelBooking(bookingId,reason);
+            console.log('sdsd',cancelBooking);
+            
+
+
+            const refund = await this.stripePayment.refundPayment(cancelBooking.paymentId.payment_intent)
+            console.log('refund',refund)
+
+            return {
+                status:200,
+                data:cancelBooking
+            }
+
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    
+//usecase for showing all bookings
+async allBookings(parlourId:string,page:number){
+    try {
+        const bookingDetails = await this.bookingRepository.allBookings(parlourId,page)
+        return{
+            status:200,
+            data:bookingDetails
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async bookedSlots(parlourId:string,date:string){
+    try {
+        const bookedSlots = await this.bookingRepository.bookedSlots(parlourId,date)
+        return{
+            status:200,
+            data:bookedSlots
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }
 
 export default BookingUsecase

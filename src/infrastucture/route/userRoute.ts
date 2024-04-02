@@ -83,6 +83,10 @@ const bookingcontroller = new bookingController(bookingusecase)
 router.post('/proceedForPayment',protect,(req,res)=>bookingcontroller.proceedForPayment(req,res))
 router.post('/confirmBooking',(req,res)=>bookingcontroller.confirmBooking(req,res))
 router.get('/allUserBooking',protect,(req,res)=>bookingcontroller.allUserBooking(req,res))
+router.post('/cancelBooking',protect,(req,res)=>bookingcontroller.cancelBooking(req,res))
+
+//showing slotes
+router.get('/bookedSlots',(req,res)=>bookingcontroller.bookedSlots(req,res))
 
 
 

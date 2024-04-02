@@ -136,5 +136,8 @@ class adminRepository implements IAdminRepository {
    const requestParlour= await ParlourModel.updateOne({_id:id},{$set:{status:value}})
    return requestParlour;
   }
+
+
+  
 }
 export default adminRepository;

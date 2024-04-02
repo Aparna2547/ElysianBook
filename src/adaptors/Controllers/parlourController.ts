@@ -351,6 +351,12 @@ async editVendorEmailOtp(req:Request,res:Response){
         
     }
 }
+
+
+
+
+
+
     async vendorLogout(req:Request,res:Response){
         try {
             res.cookie('vendorJWT', '', {

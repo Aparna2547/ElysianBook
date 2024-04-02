@@ -12,7 +12,8 @@ interface Bookings{
     services:object;
     status:string;
     seatNo:number;
-    paymentId:string
+    payment_intent:string;
+    cancelReason:string
 }
 
 export default Bookings

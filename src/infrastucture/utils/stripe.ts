@@ -31,16 +31,30 @@ class StripePayment{
     }
 
     //for refund
-   async  refundPayment(chargeId:string) {
-    try {
-       const refund = await stripe.refunds.create({
-         charge: chargeId,
-       });
+   async  refundPayment(paymentId:string) {
+    // try {
+    //    const refund = await stripe.refunds.create({
+    //      charge: chargeId,
+    //    });
    
-       console.log('Refund created:', refund.id);
-    } catch (error) {
-       console.error('Error creating refund:', error);
-    }
+    //    console.log('Refund created:', refund.id);
+    // } catch (error) {
+    //    console.error('Error creating refund:', error);
+    // }
+    try {
+        const paymentIntentResponse = await stripe.paymentIntents.retrieve(paymentId);
+        console.log('hqi',paymentIntentResponse.latest_charge)
+        const chargeId = paymentIntentResponse.latest_charge
+               const refund = await stripe.refunds.create({
+                 charge: chargeId as string,
+               });
+           
+               console.log('Refund created:', refund.id);
+               return refund
+            } catch (error) {
+               console.error('Error creating refund:', error);
+        }
+        
    }
    
     

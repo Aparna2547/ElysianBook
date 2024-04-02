@@ -118,6 +118,7 @@ class parlourRepository implements IParlourRepository {
     const vendorEdit = await ParlourModel.findByIdAndUpdate(vendorId,vendor)
     return vendorEdit
   }
+
 }
 
 export default parlourRepository;

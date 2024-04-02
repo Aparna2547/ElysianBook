@@ -1,5 +1,5 @@
 import Parlour from "../domain_entites/parlour";
-import ParlourRepository from "./interface/parlourInterface";
+import IParlourRepository from "./interface/parlourInterface";
 import otpGen from "../infrastucture/utils/otpGen";
 import sendOtp from "../infrastucture/utils/sendMail";
 import Encrypt from "../infrastucture/utils/hashPassword";
@@ -8,7 +8,7 @@ import User from "../domain_entites/user";
 import Cloudinary from "../infrastucture/utils/cloudinary";
 
 class ParlourUseCase{
-    private parlourRepository : ParlourRepository
+    private parlourRepository : IParlourRepository
     private otpGen : otpGen
     private sendOtp : sendOtp
     private Encrypt : Encrypt
@@ -16,7 +16,7 @@ class ParlourUseCase{
     private Cloudinary : Cloudinary
 
 
-    constructor(parlourRepository : ParlourRepository,otpGen : otpGen,sendOtp : sendOtp, Encrypt : Encrypt,JWTtokens:JWTtokens,Cloudinary:Cloudinary){
+    constructor(parlourRepository : IParlourRepository,otpGen : otpGen,sendOtp : sendOtp, Encrypt : Encrypt,JWTtokens:JWTtokens,Cloudinary:Cloudinary){
         this.parlourRepository = parlourRepository
         this.sendOtp = sendOtp
         this.otpGen = otpGen
@@ -351,6 +351,7 @@ async editVendorEmailSave(vendorId:string,email:string){
         
     }
 }
+
 
 }
 

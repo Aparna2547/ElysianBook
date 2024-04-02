@@ -3,6 +3,8 @@ import { UserModel } from "../database/userModel";
 import { ParlourModel } from "../database/ParlourModel";
 import IBookingRepository from "../../use_case/interface/bookingInterface";
 import { BookingModel } from "../database/bookingModel";
+import { Types } from "mongoose";
+
 
 class bookingRepository implements IBookingRepository {
 
@@ -27,7 +29,7 @@ class bookingRepository implements IBookingRepository {
         let totalPages = Math.floor(totalBookings/limit)
         const bookingDetails = await BookingModel.find({userId}).populate('userId').populate('parlourId').skip(skip).limit(limit)
         console.log('bookingdetials',bookingDetails)
-        return bookingDetails
+        return {bookingDetails,totalPages}
       }
 
       async parlourDetails(parlourId:string){
@@ -39,5 +41,64 @@ class bookingRepository implements IBookingRepository {
         const bookingsOnDate = await BookingModel.find({date,parlourId})
         return bookingsOnDate
       }
-}
+
+      async cancelBooking(bookingId:string,reason:string){
+        const booking  = await BookingModel.updateOne({_id:bookingId},{
+          $set:{status:'cancelled',cancelReason:reason},
+        },
+        {
+          upsert:true
+        })
+        const paymentId = await BookingModel.findOne({_id:bookingId},{payment_intent:1})
+      return {paymentId}
+
+      }
+
+
+       //getting all bookings
+   async allBookings(parlourId:string,page:number): Promise<any> {
+    let limit = 5
+    let skip = (page-1) * limit
+    const totalBookings = await BookingModel.find({parlourId}).countDocuments()
+    const totalPages = Math.floor(totalBookings/limit)
+    const bookingDetails = await BookingModel.find({parlourId}).populate('userId').populate('parlourId').sort({date:-1})
+    return {bookingDetails,totalPages}
+  }
+  async bookedSlots(parlourId: string, date: string) {
+    const formattedDate = new Date(date);
+  console.log('df',formattedDate,parlourId);
+  
+    // Find bookings for the specified parlour and date
+    const data = await BookingModel.aggregate([
+      { 
+        $match: {
+          date: formattedDate,
+          parlourId: new Types.ObjectId(parlourId)
+        }
+      },
+      { 
+        $group: {
+          _id: "$seatNo", // Group by seatNo
+          bookings: {
+            $push: "$$ROOT" // Push the entire document to the bookings array
+          }
+        }
+      },
+      { 
+        $project: {
+          _id: 0, // Exclude the _id field
+          seatNo: "$_id", // Rename _id to seatNo
+          bookings: 1 // Include the bookings array
+        }
+      }
+    ]);
+  
+    console.log('dkasfjadgkdf', data);
+    return data;
+  }
+  
+  
+  }
+
+
 export default bookingRepository;

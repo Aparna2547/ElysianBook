@@ -35,7 +35,10 @@ const bookingSchema : Schema<Bookings> = new mongoose.Schema({
     seatNo:{
         type:Number
     },
-    paymentId:{
+    payment_intent:{
+        type:String
+    },
+    cancelReason:{
         type:String
     }
 })

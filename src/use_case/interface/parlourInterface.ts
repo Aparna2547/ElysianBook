@@ -10,7 +10,7 @@ interface IParlourRepository{
     findVendorById(vendorId:string):Promise<any>
     editVendorName(vendorId:string,name:string):Promise<any>,
     editVendorPassword(vendorId:string,hashedPassword:string):Promise<any>,
-    editVendor(vendor:Parlour,vendorId:string):Promise<any>
+    editVendor(vendor:Parlour,vendorId:string):Promise<any>,
 }
 
 export default IParlourRepository

@@ -42,6 +42,8 @@ router.put('/editVendorName',protect,(req,res)=>controller.editVendorName(req,re
 router.put('/editVendorPassword',protect,(req,res)=>controller.editVendorPassword(req,res))
 router.put('/editVendorEmail',protect,(req,res)=>controller.editVendorEmail(req,res))
 router.put('/editVendorEmailOtp',protect,(req,res) =>controller.editVendorEmailOtp(req,res))
+
+
 router.post('/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 
 
@@ -68,8 +70,22 @@ router.put('/listService',protect,(req,res)=>servicecontroller.listService(req,r
 
 
 
+// ----------------------------------------------------------------------------------------
+import bookingController from "../../adaptors/Controllers/bookingController";
+import bookingUsecase from "../../use_case/bookingUseCase";
+import bookingRepository from "../repository/bookingRepository";
+import StripePayment from "../utils/stripe";
+import SlotChecking from "../utils/SlotChecking";
 
 
+const bookingrepository = new bookingRepository()
+const stripePayment = new StripePayment()
+const slotChecking = new SlotChecking()
+const bookingusecase = new bookingUsecase(bookingrepository,stripePayment,slotChecking)
+const bookingcontroller = new bookingController(bookingusecase)
+
+
+router.get('/allBookings',protect,(req,res)=>bookingcontroller.allBookings(req,res))
 
 
 export default router
