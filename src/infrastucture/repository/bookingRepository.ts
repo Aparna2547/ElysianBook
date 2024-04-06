@@ -23,12 +23,13 @@ class bookingRepository implements IBookingRepository {
       async userBookings(userId:string,page:number){
 
         console.log('inside see repository')
-        let limit = 3
+        let limit = 4
         let skip =(page-1) * limit;
         let totalBookings = await BookingModel.find({}).countDocuments()
-        let totalPages = Math.floor(totalBookings/limit)
+        console.log(totalBookings)
+        let totalPages = Math.floor(totalBookings/limit)+1
         const bookingDetails = await BookingModel.find({userId}).populate('userId').populate('parlourId').skip(skip).limit(limit)
-        console.log('bookingdetials',bookingDetails)
+        // console.log('bookingdetials',bookingDetails)
         return {bookingDetails,totalPages}
       }
 
@@ -57,11 +58,11 @@ class bookingRepository implements IBookingRepository {
 
        //getting all bookings
    async allBookings(parlourId:string,page:number): Promise<any> {
-    let limit = 5
+    let limit = 1
     let skip = (page-1) * limit
     const totalBookings = await BookingModel.find({parlourId}).countDocuments()
-    const totalPages = Math.floor(totalBookings/limit)
-    const bookingDetails = await BookingModel.find({parlourId}).populate('userId').populate('parlourId').sort({date:-1})
+    const totalPages = Math.floor(totalBookings/limit) 
+    const bookingDetails = await BookingModel.find({parlourId}).populate('userId').populate('parlourId').sort({date:-1}).skip(skip).limit(limit)
     return {bookingDetails,totalPages}
   }
   async bookedSlots(parlourId: string, date: string) {

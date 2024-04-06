@@ -125,7 +125,7 @@ import { JwtPayload } from "jsonwebtoken";
                 }
             } catch (error) {
                 console.log(error);
-                res.status(500).json({ message: "Internal Server Error" });
+                res.status(501).json({ message: "Internal Server Error" });
             }
         }
 
@@ -149,7 +149,7 @@ import { JwtPayload } from "jsonwebtoken";
                 }
             } catch (error) {
                 console.log(error);
-                res.status(500).json({ message: "Internal Server Error" });
+                res.status(501).json({ message: "Internal Server Error" });
             }
         }
 
@@ -182,6 +182,7 @@ import { JwtPayload } from "jsonwebtoken";
                 res.status(200).json(user)
             } catch (error) {
                 console.log(error);
+                res.status(501).json({ message: "Internal Server Error" });
                 
             }
         }
@@ -206,6 +207,7 @@ import { JwtPayload } from "jsonwebtoken";
         
             } catch (error) {
                 console.log(error);
+                res.status(501).json({ message: "Internal Server Error" });
             }
         }
         
@@ -234,6 +236,8 @@ import { JwtPayload } from "jsonwebtoken";
             
         } catch (error) {
             console.log(error);
+            res.status(501).json({ message: "Internal Server Error" });
+
             
         }
     }
@@ -252,6 +256,8 @@ import { JwtPayload } from "jsonwebtoken";
             }
         } catch (error) {
             console.log(error);
+            res.status(501).json({ message: "Internal Server Error" });
+
             
         }
     }
@@ -268,6 +274,8 @@ async passwordChange(req:Request,res:Response){
 
     } catch (error) {
         console.log(error);
+        res.status(501).json({ message: "Internal Server Error" });
+
         
     }
 }
@@ -284,6 +292,8 @@ async parloursToShow(req:Request,res:Response){
         res.status(200).json(parlours)
     } catch (error) {
         console.log(error);
+        res.status(501).json({ message: "Internal Server Error" });
+
         
     }
 }
@@ -297,6 +307,8 @@ async singleParlourDetails(req:Request,res:Response){
         res.status(200).json(singleParlourStatus)
     } catch (error) {
         console.log(error);
+        res.status(501).json({ message: "Internal Server Error" });
+
         
     }
 }
@@ -319,6 +331,8 @@ async userProfile(req:Request,res:Response){
         
     } catch (error) {
         console.log(error);
+        res.status(501).json({ message: "Internal Server Error" });
+
         
     }
 }
@@ -339,6 +353,8 @@ try {
 
 } catch (error) {
     console.log(error);
+    res.status(501).json({ message: "Internal Server Error" });
+
     
 }
 }
@@ -363,6 +379,8 @@ async changeUserPassword(req:Request,res:Response){
     
     } catch (error) {
         console.log(error);
+        res.status(501).json({ message: "Internal Server Error" });
+
         
     }
     }
@@ -385,6 +403,8 @@ async changeUserPassword(req:Request,res:Response){
             
         } catch (error) {
             console.log(error);
+            res.status(501).json({ message: "Internal Server Error" });
+
             
         }
     
@@ -412,6 +432,8 @@ async changeUserPassword(req:Request,res:Response){
                 }
         } catch (error) {
             console.log(error);
+            res.status(501).json({ message: "Internal Server Error" });
+
             
         }
     }
@@ -427,6 +449,7 @@ async changeUserPassword(req:Request,res:Response){
             const imageStatus = await this.usercase.deleteProfilePicture(userId)
             res.status(200).json(imageStatus)
         } catch (error) {
+            res.status(501).json({ message: "Internal Server Error" });
             
         }
     }
@@ -446,6 +469,8 @@ async changeUserPassword(req:Request,res:Response){
 
         } catch (error) {
             console.log(error);
+            res.status(501).json({ message: "Internal Server Error" });
+
             
         }
     }

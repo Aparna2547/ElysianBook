@@ -121,7 +121,8 @@ class bookingController{
             }
             console.log('userid',userId)
 
-            const page = req.body.page as number
+            const page = parseInt(req.query.page as string)
+            console.log(page)
             const userBookings = await this.bookingusecase.userBookings(userId,page)
             res.status(200).json(userBookings)
 
@@ -156,7 +157,8 @@ async allBookings(req:Request,res:Response){
             parlourId = decoded.id
         }
         console.log(parlourId)
-        const page =parseInt(req.query.page as string)
+        const page = parseInt(req.query.page as string)
+    
         const bookingDetails = await this.bookingusecase.allBookings(parlourId,page)
         res.status(200).json(bookingDetails)
     } catch (error) {

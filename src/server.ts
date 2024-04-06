@@ -1,12 +1,12 @@
 import { createServer } from "./infrastucture/config/app";
-import { connetDb } from "./infrastucture/config/connectDb";
+import { connectDb } from "./infrastucture/config/connectDb";
 import dotenv from 'dotenv'
 dotenv.config()
 
 
 const startServer = async ()=>{
     try {
-        await connetDb()
+        await connectDb()
 
         const app = createServer()
         app?.listen(3000,()=>{

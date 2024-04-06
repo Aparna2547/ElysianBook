@@ -89,6 +89,7 @@ router.post('/cancelBooking',protect,(req,res)=>bookingcontroller.cancelBooking(
 router.get('/bookedSlots',(req,res)=>bookingcontroller.bookedSlots(req,res))
 
 
+// ---------------------------------------------------------------------------------------
 
 
 export default router
