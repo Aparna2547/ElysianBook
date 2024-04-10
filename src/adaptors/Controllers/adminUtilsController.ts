@@ -32,6 +32,44 @@ class AdminUtilsController {
             
         }
     }
+
+    async addBanner(req:Request,res:Response){
+        try {
+            console.log('hello',req.files);
+            const image = req.files
+
+            const addBanner= this.adminUtilsCase.addBanner(image)
+            res.status(200).json(addBanner)
+            
+            
+        } catch (error) {
+            res.status(500).json('internal servererror')
+        }
+    }
+
+
+    async getBanners(req:Request,res:Response){
+        try {
+            const banners = await this.adminUtilsCase.getBanners()
+            res.status(200).json(banners)
+
+        } catch (error) {
+            res.status(500).json('internal server error')
+        }
+    }
+
+    async deleteBanner(req:Request,res:Response){
+        try {
+            console.log('hi',req.query.banner)
+            const banner = req.query.banner as string
+            const bannerDelete = await this.adminUtilsCase.deleteBanner(banner)
+            res.status(200).json(bannerDelete)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json('internal server eror')
+            
+        }
+    }
 }
 
 export default AdminUtilsController;

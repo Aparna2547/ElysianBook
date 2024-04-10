@@ -18,6 +18,25 @@ class AdminutilsRepository implements IAdminutilsRepository {
         return facilities
     }
   
+    async addBanner(imageLink:any){
+        const bannerAdd = await AdminUtilsModel.updateOne({},{$push:{banners:{$each:imageLink}}},{new:true})
+        console.log('completed',bannerAdd);
+        
+        return bannerAdd
+    }
+
+    async getBanners():Promise<any>{
+        const banners = await AdminUtilsModel.find({},{banners:1}) 
+        return banners
+    }
+
+    async deleteBanner(banner:string){
+        const bannerDelete = await AdminUtilsModel.updateOne({},{
+            $pull:{banners:banner}
+        })
+        console.log('deleted')
+        return bannerDelete
+    }
 }   
 
 

@@ -3,6 +3,7 @@ import { adminModel } from "../database/adminModel";
 import IAdminRepository from "../../use_case/interface/adminInterface";
 import { UserModel } from "../database/userModel";
 import { ParlourModel } from "../database/ParlourModel";
+import { BookingModel } from "../database/bookingModel";
 
 class adminRepository implements IAdminRepository {
   async findByEmail(email: string) {
@@ -135,6 +136,15 @@ class adminRepository implements IAdminRepository {
   async parlourRequest(id:string,value:string){
    const requestParlour= await ParlourModel.updateOne({_id:id},{$set:{status:value}})
    return requestParlour;
+  }
+
+  async totalDetails():Promise<any>{
+    const allUsers = await UserModel.find({}).countDocuments()
+    console.log('allusers',allUsers);
+
+    const allParlours = await ParlourModel.find({}).countDocuments()
+    console.log('asllparlour',allParlours);
+    return {allUsers,allParlours}
   }
 
 

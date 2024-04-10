@@ -140,6 +140,19 @@ class adminController{
         }
     }
 
+
+    //for taking all details
+    async totalDetails(req:Request,res:Response){
+        try {
+            const totalDetails = await this.admincase.totalDetails()
+            res.status(200).json(totalDetails)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json('internal server error')
+            
+        }
+    }
+
     //admin logout
     async adminLogout(req:Request,res:Response){
         try {

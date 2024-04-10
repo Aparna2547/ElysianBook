@@ -8,7 +8,10 @@ import AdminUtils from "../../domain_entites/adminUtils";
 const adminUtils: Schema<AdminUtils> = new mongoose.Schema({
   facilities:{
     type:Array
-  }
+  },
+  banners:{
+    type:Array
+  } 
 })
 
 const AdminUtilsModel = mongoose.model<AdminUtils>("facilities",adminUtils)

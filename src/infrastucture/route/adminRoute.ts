@@ -24,6 +24,13 @@ router.put('/blockVendor',protect,(req,res)=>controller.blockVendor(req,res))
 router.get('/parlours',protect,(req,res)=>controller.getParlours(req,res))
 router.get('/singleParlour',protect,(req,res)=>controller.singleParlourDetails(req,res))
 router.post('/parlourRequestConfirmation',protect,(req,res)=>controller.parlourRequestConfirmation(req,res))
+
+
+
+//admin dashboard
+router.get('/totalDetails',protect,(req,res)=>controller.totalDetails(req,res))
+
+
 router.post('/adminlogout',(req,res)=>controller.adminLogout(req,res))
 
 
@@ -53,18 +60,26 @@ router.put('/hidecategory',protect,(req,res)=>catcontroller.hideCategory(req,res
 
 // -------------------------------------------------------------------------------------------------------------------------------
 
+//admin utils such as banners facilities
+
 import adminUtilsController from "../../adaptors/Controllers/adminUtilsController"
 import adminUtilsRepository from "../repository/adminUtilsRepository"
 import adminUtilsUseCase from "../../use_case/adminUtilsUseCase"
+// import Cloudinary from "../utils/cloudinary";
 
 
 const utilsrepository = new adminUtilsRepository()
-const utilsusecase = new adminUtilsUseCase(utilsrepository)
+const utilsCloudinary = new Cloudinary()
+const utilsusecase = new adminUtilsUseCase(utilsrepository,utilsCloudinary)
 const utilscontroller = new adminUtilsController(utilsusecase)
 
 router.get('/facilities',protect,(req,res)=>utilscontroller.getFacilites(req,res))
 router.post('/addFacility',protect,(req,res)=>utilscontroller.addFacility(req,res))
-// router.put('/editFacilty',protect,(req,res)=>utilscontroller.editFacility(req,res))
+
+
+router.post('/addBanner',protect,multerMid.array('image',3),(req,res)=>utilscontroller.addBanner(req,res))
+router.get('/getBanners',protect,(req,res)=>utilscontroller.getBanners(req,res))
+router.put('/deleteBanner',protect,(req,res)=>utilscontroller.deleteBanner(req,res))
 
 export default router
 

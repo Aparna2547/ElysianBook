@@ -2,6 +2,9 @@ import Parlour from "../../domain_entites/parlour";
 import { ParlourModel } from "../database/ParlourModel";
 import IParlourRepository from "../../use_case/interface/parlourInterface";
 import { parseCommandLine } from "typescript";
+import { ServiceModel } from "../database/serviceModel";
+import { BookingModel } from "../database/bookingModel";
+import mongoose from "mongoose";
 
 class parlourRepository implements IParlourRepository {
   async saveParlour(parlour: Parlour) {
@@ -117,6 +120,91 @@ class parlourRepository implements IParlourRepository {
   async editVendor(vendor:Parlour,vendorId:string) {
     const vendorEdit = await ParlourModel.findByIdAndUpdate(vendorId,vendor)
     return vendorEdit
+  }
+
+  async dashboardDetails(parlourId:string){
+    const objectId = new mongoose.Types.ObjectId(parlourId);
+    console.log(objectId)
+    const allServices = await ServiceModel.find({vendorId:parlourId}).countDocuments()
+    console.log(allServices,'dknkdc');
+
+    const allBookings = await BookingModel.find({parlourId}).countDocuments()
+    console.log(allBookings);
+
+    const cancelledBookings = await BookingModel.find({parlourId:parlourId,status:"cancelled"}).countDocuments()
+    console.log('dfs',cancelledBookings)
+
+    const revenue = await BookingModel.aggregate([
+      {
+        $match:{
+          parlourId:objectId,
+          status:'completed'
+        }
+      },
+      {
+        $group:{
+          _id:'$parlourId',
+          totalPrice:{$sum:"$totalPrice"}
+        }
+      },
+      {$project:{
+        _id:0,
+        totalPrice:1
+      }
+    }
+    ])
+    const totalRevenue = revenue.length > 0 ? revenue[0].totalPrice : 0;
+
+    console.log('revenye',totalRevenue)
+
+    const profit = Math.floor(totalRevenue * (20 /100))
+    console.log(profit)
+    
+    return {allServices,allBookings,totalRevenue,cancelledBookings,profit}
+    
+  }
+
+  async getMonthlyCompletedBooking(parlourId:string,year:number){
+  const startDate  = new Date(year,0,1)
+    const endDate = new Date(year +1 , 0, 1)
+    const objectId = new mongoose.Types.ObjectId(parlourId);
+    console.log(startDate,endDate);
+    
+    const result = await BookingModel.aggregate([
+      {
+        $match:{
+          parlourId:objectId,
+          status:'completed',
+          date:{$gte:startDate,$lt:endDate}
+        }
+      },
+      {
+        $group:{
+          _id:{
+            month:{$month:"$date"},
+            year:{$year:"$date"}
+          },
+          totalPrice:{$sum:"$totalPrice"}
+        }
+      },
+      {
+        $project:{
+          _id:0,
+          month:"$_id.month",
+          year:"$_id.year",
+          totalPrice:1
+        }
+      },
+      {
+        $sort:{
+          year:1,
+          month:1
+        }
+      }
+    ])
+    console.log('result',result);
+    
+    return result
   }
 
 }

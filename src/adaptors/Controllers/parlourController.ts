@@ -356,6 +356,45 @@ async editVendorEmailOtp(req:Request,res:Response){
 
 
 
+//dashboard details
+async dashboardDetails(req:Request,res:Response){
+    try {
+        let parlourId ;
+        const token = req.cookies.vendorJWT
+        if(token){
+            const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload
+            parlourId = decoded.id
+            
+        }
+        console.log(parlourId)
+        const dashboardDetails = await this.parlourcase.dashboardDetails(parlourId)
+        res.status(200).json(dashboardDetails)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json("Fetching error")
+        
+    }
+}
+
+//for charts
+async getMonthlyCompletedBooking(req:Request,res:Response){
+    try {
+        
+        let parlourId ;
+        const token = req.cookies.vendorJWT
+        if(token){
+            const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload
+            parlourId = decoded.id
+            
+        }
+        const year = parseInt(req.query.year as string)
+        const result = await this.parlourcase.getMonthlyCompletedBooking(parlourId,year)
+        res.status(200).json(result)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
     async vendorLogout(req:Request,res:Response){
         try {

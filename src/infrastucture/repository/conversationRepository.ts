@@ -26,11 +26,6 @@ class conversationRepository implements IconversationInterface{
         }
     }
 
-   
-
-    
-    
-
          async getConversation(id: string): Promise<any> {
             const conversations = await conversationModel.find({members:{$in:[id]}})
             console.log('conversations',conversations);

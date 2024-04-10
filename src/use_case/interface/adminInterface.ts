@@ -8,7 +8,8 @@ interface IAdminRepository{
     getParlours(search:string,page:number):Promise<any>,
     blockVendor(id:string):Promise<any>,
     getSingleParlourDetails(id:string):Promise<any>,
-    parlourRequest(id:string,value:string):Promise<any>
+    parlourRequest(id:string,value:string):Promise<any>,
+    totalDetails():Promise<any>;
 }
 
 export default IAdminRepository

@@ -58,7 +58,7 @@ class bookingRepository implements IBookingRepository {
 
        //getting all bookings
    async allBookings(parlourId:string,page:number): Promise<any> {
-    let limit = 1
+    let limit = 4
     let skip = (page-1) * limit
     const totalBookings = await BookingModel.find({parlourId}).countDocuments()
     const totalPages = Math.floor(totalBookings/limit) 

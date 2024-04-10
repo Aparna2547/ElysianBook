@@ -352,6 +352,31 @@ async editVendorEmailSave(vendorId:string,email:string){
     }
 }
 
+async dashboardDetails(parlourId:string){
+    try {
+        let dashboardDetails = await this.parlourRepository.dashboardDetails(parlourId)
+        return{
+            status:200,
+            data:dashboardDetails
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async getMonthlyCompletedBooking(parlourId:string,year:number){
+    try {
+        const res = await this.parlourRepository.getMonthlyCompletedBooking(parlourId,year)
+        return{
+            status:200,
+            data:res
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
 }
 

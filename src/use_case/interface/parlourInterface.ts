@@ -11,6 +11,8 @@ interface IParlourRepository{
     editVendorName(vendorId:string,name:string):Promise<any>,
     editVendorPassword(vendorId:string,hashedPassword:string):Promise<any>,
     editVendor(vendor:Parlour,vendorId:string):Promise<any>,
+    dashboardDetails(parlourId:string):Promise<any>,
+    getMonthlyCompletedBooking(parlourId:string,year:number):Promise<any>,
 }
 
 export default IParlourRepository

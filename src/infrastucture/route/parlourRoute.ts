@@ -44,6 +44,10 @@ router.put('/editVendorEmail',protect,(req,res)=>controller.editVendorEmail(req,
 router.put('/editVendorEmailOtp',protect,(req,res) =>controller.editVendorEmailOtp(req,res))
 
 
+//dashboard
+router.get('/dashboardDetails',protect,(req,res)=>controller.dashboardDetails(req,res))
+router.get('/monthlyProfit',protect,(req,res)=>controller.getMonthlyCompletedBooking(req,res))
+
 router.post('/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 
 

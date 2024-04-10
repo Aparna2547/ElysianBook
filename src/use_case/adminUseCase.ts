@@ -158,6 +158,24 @@ class Adminusecase{
             
         }
     }
+
+    async totalDetails(){
+        try {
+            console.log('hello')
+            const totalDetails = await this.adminRepository.totalDetails()
+            return{
+                status:200,
+                data:totalDetails
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                status:500,
+                data:'internal server error'
+            }
+            
+        }
+    }
 }
 
 
