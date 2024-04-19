@@ -8,7 +8,9 @@ parlourDetails(parlourId:string):Promise<any>,
 bookingsOnDate(parlourId:string,date:string|Date):Promise<any>,
 cancelBooking(bookingId:string,reason:string):Promise<any>,
 allBookings(parlourId:string,page:number):Promise<any>,   
-bookedSlots(parlourId:string,date:string):Promise<any>
+bookedSlots(parlourId:string,date:string):Promise<any>,
+getHolidays(parlourId:string,date:string):Promise<any>,
+cancelledByParlour(bookingId:string,reason:string):Promise<any>
 
 }
 export default IBookingRepository

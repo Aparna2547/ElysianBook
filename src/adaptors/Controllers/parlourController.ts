@@ -396,6 +396,50 @@ async getMonthlyCompletedBooking(req:Request,res:Response){
     }
 }
 
+// async revenueAndRefund(req:Request,res:Response){
+//     try {
+//         let parlourId ;
+//         const token = req.cookies.vendorJWT
+//         if(token){
+//             const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload
+//             parlourId = decoded.id
+            
+//         }
+//         const year = parseInt(req.query.year as string)
+//         const result = await this.parlourcase.revenueAndRefund(parlo)
+//         res.status(200).json(result)
+
+//     } catch (error) {
+//         res.status(500).json('internal server error')
+//     }
+// }
+
+async addHolidays(req:Request,res:Response){
+    try {
+        let parlourId ;
+        const token = req.cookies.vendorJWT
+        if(token){
+            const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload
+            parlourId = decoded.id
+            
+        }   
+
+        const date = req.query.date as string;
+        console.log(date);
+        const convertedDate = new Date(date)
+        convertedDate.setDate(convertedDate.getDate())
+        convertedDate.setUTCHours(0, 0, 0, 0);
+        console.log('converteddate',convertedDate.toISOString())
+        
+        if (!parlourId || !date) {
+            return res.status(400).json({ message: 'Invalid parlourId or dates' });
+        }
+        const holidays = await this.parlourcase.addHolidays(parlourId,convertedDate)
+        res.status(200).json(holidays)
+    } catch (error) {
+        res.status(500).json('internal server error')
+    }
+}
     async vendorLogout(req:Request,res:Response){
         try {
             res.cookie('vendorJWT', '', {

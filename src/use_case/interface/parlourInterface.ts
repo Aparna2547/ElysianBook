@@ -13,6 +13,7 @@ interface IParlourRepository{
     editVendor(vendor:Parlour,vendorId:string):Promise<any>,
     dashboardDetails(parlourId:string):Promise<any>,
     getMonthlyCompletedBooking(parlourId:string,year:number):Promise<any>,
+    addHolidays(parlourId:string,date:Date):Promise<any>,
 }
 
 export default IParlourRepository

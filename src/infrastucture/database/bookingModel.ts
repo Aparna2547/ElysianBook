@@ -40,6 +40,9 @@ const bookingSchema : Schema<Bookings> = new mongoose.Schema({
     },
     cancelReason:{
         type:String
+    },
+    cancelledByParlour:{
+        type:String
     }
 })
 

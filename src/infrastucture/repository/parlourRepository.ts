@@ -203,9 +203,46 @@ class parlourRepository implements IParlourRepository {
       }
     ])
     console.log('result',result);
+
+   const bookingData = await BookingModel.aggregate([
+  {
+    $match: {
+      parlourId: objectId,
+      status: { $in: ['completed', 'cancelled'] },
+      date: { $gte: startDate, $lt: endDate }
+    }
+  },
+  {
+    $group: {
+      _id: '$status',
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      status: '$_id',
+      count: 1
+    }
+  }
+]);
+console.log('bookindata',bookingData)
     
+    // return {result,bookingData} 
     return result
   }
+
+  async addHolidays(parlourId: string, date: Date): Promise<any> {
+    console.log('rpo',date);
+   
+    const addHoliday = await ParlourModel.updateOne(
+      { _id: parlourId },
+      {
+        $push: { holidays: date } // Using the Date object directly
+      }
+    );
+    console.log('sada', addHoliday);
+}
 
 }
 

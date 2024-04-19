@@ -87,6 +87,7 @@ router.post('/cancelBooking',protect,(req,res)=>bookingcontroller.cancelBooking(
 
 //showing slotes
 router.get('/bookedSlots',(req,res)=>bookingcontroller.bookedSlots(req,res))
+router.get('/getHolidays',(req,res)=>bookingcontroller.getHolidays(req,res))
 
 
 // ---------------------------------------------------------------------------------------

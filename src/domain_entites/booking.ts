@@ -13,7 +13,8 @@ interface Bookings{
     status:string;
     seatNo:number;
     payment_intent:string;
-    cancelReason:string
+    cancelReason:string;
+    cancelledByParlour:string;
 }
 
 export default Bookings

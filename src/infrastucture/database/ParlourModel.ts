@@ -60,6 +60,10 @@ const parlourSchema : Schema<Parlour> = new mongoose.Schema({
     status:{
         type:String,
         default:"Registered"
+    },
+    holidays:{
+        type:[String],
+        default:[]
     }
 
 })

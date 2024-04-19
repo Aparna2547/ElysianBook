@@ -126,6 +126,25 @@ class BookingUsecase{
         }
     }
 
+
+    //cancel booking by parlour
+    async cancelledByParlour(bookingId:string,reason:string){
+        try {
+            const cancelBooking = await this.bookingRepository.cancelledByParlour(bookingId,reason)
+            
+            const refund = await this.stripePayment.refundPayment(cancelBooking.paymentId.payment_intent)
+            console.log('refund ',refund);
+            return{
+                status:200,
+                data:cancelBooking
+            }
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     
 //usecase for showing all bookings
 async allBookings(parlourId:string,page:number){
@@ -147,6 +166,19 @@ async bookedSlots(parlourId:string,date:string){
         return{
             status:200,
             data:bookedSlots
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async getHolidays(parlourId:string,date:string){
+    try {
+        const holiday = await this.bookingRepository.getHolidays(parlourId,date)
+        return {
+            status:200,
+            data:holiday
         }
     } catch (error) {
         console.log(error);

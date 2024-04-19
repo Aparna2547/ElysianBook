@@ -47,6 +47,10 @@ router.put('/editVendorEmailOtp',protect,(req,res) =>controller.editVendorEmailO
 //dashboard
 router.get('/dashboardDetails',protect,(req,res)=>controller.dashboardDetails(req,res))
 router.get('/monthlyProfit',protect,(req,res)=>controller.getMonthlyCompletedBooking(req,res))
+// router.get('/revenueAndRefund',protect,(req,res)=>controller.revenueAndRefund(req,res))
+
+//holidays
+router.post('/addHolidays',protect,(req,res)=>controller.addHolidays(req,res))
 
 router.post('/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 
@@ -90,6 +94,7 @@ const bookingcontroller = new bookingController(bookingusecase)
 
 
 router.get('/allBookings',protect,(req,res)=>bookingcontroller.allBookings(req,res))
+router.post('/cancelledByParlour',protect,(req,res)=>bookingcontroller.cancelledByParlour(req,res))
 
 
 export default router

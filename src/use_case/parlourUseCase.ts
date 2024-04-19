@@ -378,6 +378,17 @@ async getMonthlyCompletedBooking(parlourId:string,year:number){
     }
 }
 
+async addHolidays(parlourId:string,date:Date){
+    try {
+        console.log('usexase',date)
+        const addHoliday = await this.parlourRepository.addHolidays(parlourId,date)
+        return addHoliday
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }
 
 export default ParlourUseCase

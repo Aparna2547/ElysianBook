@@ -18,6 +18,7 @@ interface Parlour{
     facilities:string[],
     banners:string[],
     status:string,
+    holidays:string[],
     
 }
 

@@ -167,14 +167,29 @@ async allBookings(req:Request,res:Response){
     }
 }
 
+//cancelled by admin
+async cancelledByParlour(req:Request,res:Response){
+    try {
+        const  bookingId = req.query.bookingId as string
+        const reason = req.query.reason as string
+
+        const cancelledData = await this.bookingusecase.cancelledByParlour(bookingId,reason)
+        res.status(200).json(cancelledData)
+    } catch (error) {
+        res.status(500).json('internal server error')
+    }
+}
+
+
+
 //showig slots
 async bookedSlots(req:Request,res:Response){
     try {
         const parlourId = req.query.parlourId as string
         const dateString = new Date(req.query.date  as string);
-        console.log('daya',dateString)
+        // console.log('daya',dateString)
         const date = dateString.toISOString().split('T')[0];
-        console.log(date);
+        // console.log(date);
         
 
         // const convertedDate = new Date(date)
@@ -184,6 +199,24 @@ async bookedSlots(req:Request,res:Response){
 
         const slots = await this.bookingusecase.bookedSlots(parlourId,date)
         res.status(200).json(slots)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+async getHolidays(req:Request,res:Response){
+    try {
+        console.log('get holidays',req.query.date)
+        const parlourId = req.query.parlourId as string
+
+        const dateString = new Date(req.query.date  as string);
+        console.log('daya',dateString)
+        const date = dateString.toISOString().split('T')[0];
+        console.log(date);
+        const data = await this.bookingusecase.getHolidays(parlourId,date)
+        res.status(200).json(data)
     } catch (error) {
         console.log(error);
         
