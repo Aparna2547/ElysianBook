@@ -180,13 +180,13 @@ class userController {
                 // Check if user is defined before accessing its properties
                 if (user && user.data && typeof user.data === 'object' && 'accessToken' in user.data && 'refreshToken' in user.data) {
                     console.log('usi', user);
-                    res.cookie('userJWT', user.data.accessToken, {
+                    res.cookie('RefreshToken', user.data.refreshToken, {
                         httpOnly: true,
                         secure: process.env.Node_ENV !== 'development',
                         sameSite: 'none',
                         maxAge: 30 * 24 * 60 * 60 * 1000,
                     });
-                    res.cookie('RefreshToken', user.data.refreshToken, {
+                    res.cookie('userJWT', user.data.accessToken, {
                         httpOnly: true,
                         secure: process.env.Node_ENV !== 'development',
                         sameSite: 'none',
