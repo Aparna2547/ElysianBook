@@ -2,6 +2,7 @@ import User from "../../domain_entites/user";
 import { UserModel } from "../database/userModel";
 import IUserRepository from "../../use_case/interface/userInterface";
 import { ParlourModel } from "../database/ParlourModel";
+import { CategoryModel } from "../database/CategoryModel";
 
 
 class userRepository implements IUserRepository{
@@ -42,13 +43,18 @@ class userRepository implements IUserRepository{
     }
 
     
-    async getParloursToShow(page:number){
+    async getParloursToShow(page:number,location:string){
+        console.log('loc',location);
+        
+        
         let limit = 6   
         let skip = (page - 1)* limit
-        const totalParlours = await ParlourModel.find({status:{$eq:"Active"}}).countDocuments()
+        const totalParlours = await ParlourModel.find({status:{$eq:"Active"},
+        locality: {$regex : '^' + location ,$options:"i"}}).countDocuments()
         const totalPages = Math.floor(totalParlours/limit)
-        const parlours = await ParlourModel.find({status:{$eq:"Active"}}).skip(skip).limit(limit);
-        // console.log('loo',parlours)
+        const parlours = await ParlourModel.find({status:{$eq:"Active"},
+        locality: {$regex : '^' + location ,$options:"i"}}).skip(skip).limit(limit);
+        console.log('loo',parlours)
         return {parlours,totalPages}
     }
 
@@ -62,6 +68,13 @@ class userRepository implements IUserRepository{
         console.log(error);
         
      }   
+    }
+
+
+    async getAllCategories(){
+        const data = await CategoryModel.find({},{hide:false})
+        console.log(data)
+        return data
     }
 
     async findById(userId:string){

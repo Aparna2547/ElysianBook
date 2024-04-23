@@ -176,6 +176,21 @@ class Adminusecase{
             
         }
     }
+
+    async monthlyData(year:number){
+        try {
+            const res = await this.adminRepository.monthlyData(year)
+            return{
+                status:200,
+                data:res
+            }
+        } catch (error) {
+            return{
+                status:401,
+                data:'internal server error'
+            }
+        }
+    }
 }
 
 

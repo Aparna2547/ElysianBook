@@ -9,7 +9,8 @@ interface IAdminRepository{
     blockVendor(id:string):Promise<any>,
     getSingleParlourDetails(id:string):Promise<any>,
     parlourRequest(id:string,value:string):Promise<any>,
-    totalDetails():Promise<any>;
+    totalDetails():Promise<any>,
+    monthlyData(year:number):Promise<any>
 }
 
 export default IAdminRepository

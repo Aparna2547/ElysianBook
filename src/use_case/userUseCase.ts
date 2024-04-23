@@ -145,16 +145,30 @@ class Userusecase{
                 console.log('passwordMatch');
                 
                 if (passwordMatch) {
-                    const token = this.JWTtokens.createJwt(userFound._id, 'user');
-                    return {
-                        status: 200,
-                        data: {
-                            success: true,
-                            message: 'authentication success',
-                            userId: userFound._id,
-                            token: token
+                    const userId = userFound._id;
+                    const accessToken = this.JWTtokens.generateAccessToken(userId,'user')
+                    const refreshToken = this.JWTtokens.generateRefreshToken(userId)
+                    // const token = this.JWTtokens.createJwt(userFound._id, 'user');
+                    // return {
+                    //     status: 200,
+                    //     data: {
+                    //         success: true,
+                    //         message: 'authentication success',
+                    //         userId: userFound._id,
+                    //         token: token
+                    //     }
+                    // };
+                    return{
+                        status:200,
+                        data:{
+                            success:true,
+                            message:"authentication success",
+                            userId:userFound._id,
+                            accessToken:accessToken,
+                            refreshToken:refreshToken
                         }
-                    };
+                    }
+
                 } else {
                     return {
                         status: 200,
@@ -204,9 +218,9 @@ class Userusecase{
     }
 
 
-    async parloursToShow(page:number){
+    async parloursToShow(page:number,location:string){
         try {
-            const parlours = await this.userRepository.getParloursToShow(page)
+            const parlours = await this.userRepository.getParloursToShow(page,location)
             return{
                 status:200,
                 data:parlours
@@ -226,12 +240,29 @@ class Userusecase{
                 data:singleParlour
             }
         } catch (error) {
-            console.log(error);
+          return {
+            status:400,
+            data:error  
+          }
             
         }
     }
 
 
+    async getAllCategories(){
+        try {
+            const categories = await this.userRepository.getAllCategories()
+            return{
+                status:200,
+                data:categories
+            }
+        } catch (error) {
+            return{
+                status:200,
+                data:error
+            }
+        }
+    }
 
     async userProfile(userId:string){
         try {

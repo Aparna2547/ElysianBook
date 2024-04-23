@@ -62,7 +62,7 @@ const parlourSchema : Schema<Parlour> = new mongoose.Schema({
         default:"Registered"
     },
     holidays:{
-        type:[String],
+        type:[Date],
         default:[]
     }
 

@@ -14,7 +14,7 @@ const conversationrepository =  new conversationRepository
 function initializeSocket(server:any){
     const io = new Server(server,{
         cors:{
-            origin:"http://localhost:5000",
+            origin:process.env.CORS_URL,
              methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
 
         }
@@ -72,6 +72,12 @@ function initializeSocket(server:any){
                 io.to(user.socketId).emit("getMessage",{senderId,text})
             }
         });
+
+        socket.on('image',(imageData:object) =>{
+            console.log("recieved image data",imageData);
+            socket.broadcast.emit("image",imageData)
+            
+        })
 
         socket.on("disconnect",() =>{
             console.log("user disconnected")

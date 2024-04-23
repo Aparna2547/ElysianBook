@@ -84,12 +84,14 @@ import bookingUsecase from "../../use_case/bookingUseCase";
 import bookingRepository from "../repository/bookingRepository";
 import StripePayment from "../utils/stripe";
 import SlotChecking from "../utils/SlotChecking";
+import scheduleBooking from "../utils/scheduleBooking"
 
 
 const bookingrepository = new bookingRepository()
 const stripePayment = new StripePayment()
 const slotChecking = new SlotChecking()
-const bookingusecase = new bookingUsecase(bookingrepository,stripePayment,slotChecking)
+const schedulebooking = new scheduleBooking()
+const bookingusecase = new bookingUsecase(bookingrepository,stripePayment,slotChecking,schedulebooking)
 const bookingcontroller = new bookingController(bookingusecase)
 
 

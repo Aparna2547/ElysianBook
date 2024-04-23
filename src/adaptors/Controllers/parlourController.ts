@@ -89,7 +89,7 @@ class parlourController{
                 res.cookie('vendorJWT',vendor.data.token,{
                     httpOnly: true,
                         secure: process.env.Node_ENV !== 'development',
-                        sameSite: 'strict',
+                        sameSite: 'none',
                         maxAge: 30 * 24 * 60 * 60 * 1000,
                 });
             }

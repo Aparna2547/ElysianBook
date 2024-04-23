@@ -13,6 +13,7 @@ class bookingRepository implements IBookingRepository {
     try {
       const bookingData = await BookingModel.create(bookingDetails);
       console.log("booking successful");
+      console.log(new Date())
       return bookingData;
     } catch (error) {
       console.error("Error in confirming booking:", error);
@@ -124,8 +125,16 @@ class bookingRepository implements IBookingRepository {
       },
     ]);
 
+    const holiday = await ParlourModel.find({
+      _id: parlourId,
+      holidays: { $in: [formattedDate] }
+    });
+        console.log('holiday',holiday)
+
+
+
     // console.log("dkasfjadgkdf", data);
-    return data;
+    return {data,holiday};
   }
 
   async getHolidays(parlourId: string, date: string) {

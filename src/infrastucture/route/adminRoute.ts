@@ -29,6 +29,7 @@ router.post('/parlourRequestConfirmation',protect,(req,res)=>controller.parlourR
 
 //admin dashboard
 router.get('/totalDetails',protect,(req,res)=>controller.totalDetails(req,res))
+router.get('/monthlyData',protect,(req,res)=>controller.monthlyData(req,res))
 
 
 router.post('/adminlogout',(req,res)=>controller.adminLogout(req,res))
@@ -78,7 +79,7 @@ router.post('/addFacility',protect,(req,res)=>utilscontroller.addFacility(req,re
 
 
 router.post('/addBanner',protect,multerMid.array('image',3),(req,res)=>utilscontroller.addBanner(req,res))
-router.get('/getBanners',protect,(req,res)=>utilscontroller.getBanners(req,res))
+router.get('/getBanners',(req,res)=>utilscontroller.getBanners(req,res))
 router.put('/deleteBanner',protect,(req,res)=>utilscontroller.deleteBanner(req,res))
 
 export default router

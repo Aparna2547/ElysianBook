@@ -46,7 +46,8 @@ router.put('/changeProfilePicture' , protect,(req,res)=>controller.changeProfile
 
 //palour show
 router.get('/allParlours',(req,res)=>controller.parloursToShow(req,res))
-router.get('/parlourDetails/:id',protect,(req,res)=>controller.singleParlourDetails(req,res))
+router.get('/parlourDetails/:id',(req,res)=>controller.singleParlourDetails(req,res))
+router.get('/allcategories',(req,res)=>controller.getAllCategories(req,res))
 
 
 // ---------------------------------------------------------------------------------------------------
@@ -70,13 +71,15 @@ import bookingUsecase from "../../use_case/bookingUseCase";
 import bookingRepository from "../repository/bookingRepository";
 import StripePayment from "../utils/stripe";
 import SlotChecking from "../utils/SlotChecking";
+import scheduleBooking from "../utils/scheduleBooking";
 
 
 
 const bookingrepository = new bookingRepository()
 const stripePayment = new StripePayment()
 const slotChecking = new SlotChecking()
-const bookingusecase = new bookingUsecase(bookingrepository,stripePayment,slotChecking)
+const schedulebooking = new scheduleBooking()
+const bookingusecase = new bookingUsecase(bookingrepository,stripePayment,slotChecking,schedulebooking)
 const bookingcontroller = new bookingController(bookingusecase)
 
 //taking detaiks

@@ -1,5 +1,5 @@
 class MailerService {
-    async sendMail(to, subject, text) {
+    async sendMail(to:any, subject:any, text:any) {
       throw new Error("Method not implemented");
     }
   }

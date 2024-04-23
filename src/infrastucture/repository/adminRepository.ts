@@ -144,10 +144,73 @@ class adminRepository implements IAdminRepository {
 
     const allParlours = await ParlourModel.find({}).countDocuments()
     console.log('asllparlour',allParlours);
-    return {allUsers,allParlours}
+
+    const parlour = await ParlourModel.find({status:'Active'}).countDocuments()
+    console.log('active parlour',parlour)
+    const regFee =  parlour*2000
+    const bookings = await BookingModel.find().countDocuments()
+    const bookFee = bookings * 50
+    console.log('active parlour',bookings,bookFee)
+
+    const revenue = regFee + bookFee
+    console.log('revenue    ',revenue)
+
+    return {allUsers,allParlours,revenue}
   }
 
 
+
+  async  monthlyData(year:number) {
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year + 1, 0, 1);
+  
+    const activeParlours = await ParlourModel.find({ status: "Active", date: { $gte: startDate, $lt: endDate } }).countDocuments();
+    const regFee = activeParlours * 2000;
+  
+    const bookings = await BookingModel.find({ date: { $gte: startDate, $lt: endDate } }).countDocuments();
+  
+    console.log('Bookings:', bookings);
+    const bookFee = bookings * 50;
+  
+    const revenue = regFee + bookFee;
+    const profit = revenue - (activeParlours * 2000); 
+  
+    console.log('Revenue:', revenue);
+    console.log('Profit:', profit);
+  
+
+    const res = await BookingModel.aggregate([
+      {
+        $match:{
+          status:'completed',
+          date:{$gte:startDate,$lt:endDate}
+        }
+      },{
+        $group:{
+          _id:{
+            month:{$month:"$date"},
+            year:{$year:"$date"}
+          },
+          totalPrice:{$sum:"$totalPrice"}
+        }
+      },{
+        $project:{
+          _id:0,
+          month:"$_id.month",
+          year:"$_id.year",
+          totalPrice:1
+        }
+      },
+      {
+        $sort:{
+          year:1,
+          month:1
+        }
+      }
+    ])
+    console.log('dfkd',res)
+    return res;
+  }
   
 }
 export default adminRepository;

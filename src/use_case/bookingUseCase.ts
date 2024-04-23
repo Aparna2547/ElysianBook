@@ -2,18 +2,21 @@ import Bookings from "../domain_entites/booking";
 import IBookingRepository from "./interface/bookingInterface";
 import StripePayment from "../infrastucture/utils/stripe";
 import SlotChecking from "../infrastucture/utils/SlotChecking";
+import scheduleBooking from "../infrastucture/utils/scheduleBooking";
 
 
 class BookingUsecase{
     private bookingRepository : IBookingRepository;
     private stripePayment : StripePayment
     private slotChecking : SlotChecking
+    private schedulebooking : scheduleBooking
 
 
-    constructor(bookingRepository:IBookingRepository,stripePayment:StripePayment,slotChecking:SlotChecking){
+    constructor(bookingRepository:IBookingRepository,stripePayment:StripePayment,slotChecking:SlotChecking,schedulebooking:scheduleBooking){
         this.bookingRepository = bookingRepository
         this.stripePayment = stripePayment
         this.slotChecking = slotChecking
+        this.schedulebooking =schedulebooking
     }
 
 
@@ -80,6 +83,9 @@ class BookingUsecase{
         
         try {
             const  confirmBooking = await this.bookingRepository.confirmBooking(bookingDetails)
+
+            // const res = await this.schedulebooking.SchedulingTask()
+            // console.log('res',res)
             return{
                 status:200,
                 data:confirmBooking

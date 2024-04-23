@@ -153,6 +153,19 @@ class adminController{
         }
     }
 
+    async monthlyData(req:Request,res:Response){
+        try {
+        const year = parseInt(req.query.year as string)
+
+            const totalDetails = await this.admincase.monthlyData(year)
+            res.status(200).json(totalDetails)
+
+
+            
+        } catch (error) {
+            
+        }
+    }
     //admin logout
     async adminLogout(req:Request,res:Response){
         try {

@@ -15,7 +15,7 @@ export const createServer = () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
-    app.use(cors({origin:'http://localhost:5000',credentials:true}))
+    app.use(cors({origin:process.env.CORS_URL,credentials:true}))
 
     var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 

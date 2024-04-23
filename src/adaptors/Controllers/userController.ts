@@ -193,15 +193,25 @@ import { JwtPayload } from "jsonwebtoken";
                 console.log('userController');
                 // const user = req.body
                 const user = await this.usercase.logIn(req.body);
-        
+                console.log('kjhk',user);
+                
                 // Check if user is defined before accessing its properties
-                if (user && user.data && typeof user.data === 'object' && 'token' in user.data) {
-                    res.cookie('userJWT', user.data.token, {
+                if (user && user.data && typeof user.data === 'object' && 'accessToken' in user.data && 'refreshToken' in user.data) {
+                    console.log('usi',user)
+                    res.cookie('userJWT', user.data.accessToken, {
                         httpOnly: true,
                         secure: process.env.Node_ENV !== 'development',
-                        sameSite: 'strict',
+                        sameSite: 'none',
                         maxAge: 30 * 24 * 60 * 60 * 1000,
-                    });
+                    })
+
+                    res.cookie('RefreshToken',user.data.refreshToken,{
+                        httpOnly:true,
+                        secure: process.env.Node_ENV !== 'development',
+                        sameSite: 'none',
+                        maxAge: 30 * 24 * 60 * 60 * 1000,
+                    })
+            
                 }
                 res.status(user!.status).json(user!.data); // Use non-null assertion operator
         
@@ -286,9 +296,12 @@ async parloursToShow(req:Request,res:Response){
     try {
         // console.log('get all parlours')
         const page = parseInt(req.query.page as string) 
+        const location  = req.query.location !== 'null' ?req.query.location  as string : '' 
+        console.log('dfdf',location);
+        
 
         
-        const parlours = await this.usercase.parloursToShow(page)
+        const parlours = await this.usercase.parloursToShow(page,location)
         res.status(200).json(parlours)
     } catch (error) {
         console.log(error);
@@ -313,6 +326,15 @@ async singleParlourDetails(req:Request,res:Response){
     }
 }
 
+async getAllCategories(req:Request,res:Response){
+    try {
+        const data = await this.usercase.getAllCategories()
+        res.status(200).json(data)
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 
