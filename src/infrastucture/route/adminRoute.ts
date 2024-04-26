@@ -5,7 +5,7 @@ import express from "express";
 import JWTtokens from "../utils/JWTtokens";
 import Encrypt from "../utils/hashPassword";
 import { multerMid } from "../middleware/multerMiddleware";
-import { protect } from "../middleware/adminAuth";
+// import { protect } from "../middleware/adminAuth";
 
 const repository = new adminRepository()
 const encrypt = new Encrypt();
@@ -17,19 +17,19 @@ const controller = new adminController(usecase)
 const router = express.Router()
 
 router.post('/login',(req,res)=>controller.verifyEmail(req,res))
-router.get('/users',protect,(req,res)=>controller.getUsers(req,res))
-router.put('/userblock',protect,(req,res)=>controller.blockUser(req,res))
+router.get('/users',(req,res)=>controller.getUsers(req,res))
+router.put('/userblock',(req,res)=>controller.blockUser(req,res))
 // router.get('/vendors',protect,(req,res)=>controller.getVendors(req,res))
-router.put('/blockVendor',protect,(req,res)=>controller.blockVendor(req,res))
-router.get('/parlours',protect,(req,res)=>controller.getParlours(req,res))
-router.get('/singleParlour',protect,(req,res)=>controller.singleParlourDetails(req,res))
-router.post('/parlourRequestConfirmation',protect,(req,res)=>controller.parlourRequestConfirmation(req,res))
+router.put('/blockVendor',(req,res)=>controller.blockVendor(req,res))
+router.get('/parlours',(req,res)=>controller.getParlours(req,res))
+router.get('/singleParlour',(req,res)=>controller.singleParlourDetails(req,res))
+router.post('/parlourRequestConfirmation',(req,res)=>controller.parlourRequestConfirmation(req,res))
 
 
 
 //admin dashboard
-router.get('/totalDetails',protect,(req,res)=>controller.totalDetails(req,res))
-router.get('/monthlyData',protect,(req,res)=>controller.monthlyData(req,res))
+router.get('/totalDetails',(req,res)=>controller.totalDetails(req,res))
+router.get('/monthlyData',(req,res)=>controller.monthlyData(req,res))
 
 
 router.post('/adminlogout',(req,res)=>controller.adminLogout(req,res))
@@ -54,10 +54,10 @@ const catusecase = new categoryusecase(catrepository,cloudinary)
 const catcontroller = new categoryController(catusecase)
 
 
-router.get('/category',protect,(req,res)=>catcontroller.getCategory(req,res))
-router.post('/addcategory',protect,multerMid.single('image'),(req,res)=>catcontroller.addCategory(req,res))
-router.put('/editcategory',protect,multerMid.single('image'),(req,res)=>catcontroller.editCategory(req,res))
-router.put('/hidecategory',protect,(req,res)=>catcontroller.hideCategory(req,res))
+router.get('/category',(req,res)=>catcontroller.getCategory(req,res))
+router.post('/addcategory',multerMid.single('image'),(req,res)=>catcontroller.addCategory(req,res))
+router.put('/editcategory',multerMid.single('image'),(req,res)=>catcontroller.editCategory(req,res))
+router.put('/hidecategory',(req,res)=>catcontroller.hideCategory(req,res))
 
 // -------------------------------------------------------------------------------------------------------------------------------
 
@@ -74,13 +74,13 @@ const utilsCloudinary = new Cloudinary()
 const utilsusecase = new adminUtilsUseCase(utilsrepository,utilsCloudinary)
 const utilscontroller = new adminUtilsController(utilsusecase)
 
-router.get('/facilities',protect,(req,res)=>utilscontroller.getFacilites(req,res))
-router.post('/addFacility',protect,(req,res)=>utilscontroller.addFacility(req,res))
+router.get('/facilities',(req,res)=>utilscontroller.getFacilites(req,res))
+router.post('/addFacility',(req,res)=>utilscontroller.addFacility(req,res))
 
 
-router.post('/addBanner',protect,multerMid.array('image',3),(req,res)=>utilscontroller.addBanner(req,res))
+router.post('/addBanner',multerMid.array('image',3),(req,res)=>utilscontroller.addBanner(req,res))
 router.get('/getBanners',(req,res)=>utilscontroller.getBanners(req,res))
-router.put('/deleteBanner',protect,(req,res)=>utilscontroller.deleteBanner(req,res))
+router.put('/deleteBanner',(req,res)=>utilscontroller.deleteBanner(req,res))
 
 export default router
 
