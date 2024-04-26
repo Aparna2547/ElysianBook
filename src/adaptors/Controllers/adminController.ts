@@ -17,12 +17,16 @@ class adminController{
         console.log('admin controller');
             const admin = await this.admincase.adminLogin(req.body)
             if(admin && admin.data && typeof admin.data === 'object' && 'token' in admin.data){
+                console.log(admin);
+                
                 res.cookie('adminJWT',admin.data.token,{
                     httpOnly: true,
-                    secure: true,
+                    secure: process.env.Node_ENV !== 'development',
                     sameSite: 'none',
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                 });
+                console.log(req.cookies.adminJWT);
+                
             }
           
             res.status(admin!.status).json(admin!.data)

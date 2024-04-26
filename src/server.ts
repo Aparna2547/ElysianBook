@@ -7,7 +7,7 @@ dotenv.config()
 const startServer = async ()=>{
     try {
         await connectDb()
-
+        
         const app = createServer()
         app?.listen(3000,()=>{
             console.log('connected to the server');
