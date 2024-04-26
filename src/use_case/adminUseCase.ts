@@ -29,7 +29,10 @@ class Adminusecase{
                 const passwordMatch = await this.Encrypt.compare(admin.password,adminFound.password)
                 console.log('oasswordmatch');
                 if(passwordMatch){
+                    console.log('pas',passwordMatch)
                     const token = this.JWTtokens.createJwt(adminFound._id,'admin')
+                    console.log('tpken',token);
+                    
                     return{
                         status:200,
                         data:{

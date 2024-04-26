@@ -16,6 +16,7 @@ class adminController{
         try {
         console.log('admin controller');
             const admin = await this.admincase.adminLogin(req.body)
+            console.log('admin',admin)
             if(admin && admin.data && typeof admin.data === 'object' && 'token' in admin.data){
                 console.log(admin);
                 
