@@ -12,7 +12,8 @@ declare global{
 const protect = async (req:Request,res:Response,next:NextFunction)=>{
     let token ;
     token = req.cookies.adminJWT;
-
+    console.log('fd',token);
+    
     if(token){
         try {
             const decoded = jwt.verify(token,process.env.JWT_KEY as string) as JwtPayload;
