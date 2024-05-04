@@ -19,13 +19,14 @@ class StripePayment{
                 quantity:1
             }
         ]
-        const session = await stripe.checkout.sessions.create({
-            success_url: 'http://localhost:5000/bookingSuccessful',
-            cancel_url : 'https://example.com/cancel',
-            line_items:line_items,  
-            mode: 'payment',
-          billing_address_collection:'required'
-          });
+            const session = await stripe.checkout.sessions.create({
+                // success_url: 'http://localhost:5000/bookingSuccessful',
+                success_url: `${process.env.CORS_URL}/bookingSuccessful`,
+                cancel_url : 'https://example.com/cancel',
+                line_items:line_items,  
+                mode: 'payment',
+            billing_address_collection:'required'
+            });
 
           return session.id;
     }
