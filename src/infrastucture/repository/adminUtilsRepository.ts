@@ -19,8 +19,14 @@ class AdminutilsRepository implements IAdminutilsRepository {
     }
   
     async addBanner(imageLink:any){
-        const bannerAdd = await AdminUtilsModel.updateOne({},{$push:{banners:{$each:imageLink}}},{new:true})
-        console.log('completed',bannerAdd);
+        console.log('linkh',imageLink);
+        
+        const bannerAdd = await AdminUtilsModel.findOneAndUpdate(
+            {},
+            { $push: { banners: { $each: imageLink } } },
+            { upsert:true,new: true }
+        );      
+          console.log('completed',bannerAdd);
         
         return bannerAdd
     }

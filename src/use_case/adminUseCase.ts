@@ -26,10 +26,10 @@ class Adminusecase{
             console.log('admin usecase');
             const adminFound = await this.adminRepository.findByEmail(admin.email)
             if(adminFound){
-                const passwordMatch = await this.Encrypt.compare(admin.password,adminFound.password)
+                // const passwordMatch = await this.Encrypt.compare(admin.password,adminFound.password)
                 console.log('oasswordmatch');
-                if(passwordMatch){
-                    console.log('pas',passwordMatch)
+                if(admin.password == adminFound.password){
+                    // if(passwordMatch){
                     const token = this.JWTtokens.createJwt(adminFound._id,'admin')
                     console.log('tpken',token);
                     

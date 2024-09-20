@@ -43,30 +43,60 @@ class Adminutilsusecase {
         }
     }
 
-    async addBanner(image:any){
+    async addBanner(image: any) {
         try {
-
-            
-    const uploadBanners = await Promise.all(
-        image.map(async (file:any)=>{
-            return await this.cloudinary.saveToCloudinary(file)
-        })
-    );
-    console.log('up',uploadBanners)
-            // const imageLink = await this.cloudinary.saveToCloudinary(image)
-            // console.log(imageLink);
-
-            const saveBanner = await this.adminutilsRepository.addBanner(uploadBanners)
+            const uploadBanners = await Promise.all(
+                image.map(async (file: any) => {
+                    console.log('files', file);
+                    
+                    // Ensure to return the result of saveToCloudinary
+                    const res = await this.cloudinary.saveToCloudinary(file);
+                    console.log('hgh', res);
+                    return res; // Return the result here
+                })
+            );
+    
+            console.log('up', uploadBanners);
+    
+            const saveBanner = await this.adminutilsRepository.addBanner(uploadBanners);
             return {
-                status:200,
-            data:saveBanner
-            }
-            
+                            status:200,
+                        data:saveBanner
+                        }
+            // Further processing with saveBanner if needed
         } catch (error) {
-            console.log(error);
-            
+            console.error('Error in addBanner:', error);
         }
     }
+    
+
+    // async addBanner(image:any){
+    //     try {
+
+            
+    // const uploadBanners = await Promise.all(
+    //     image.map(async (file:any)=>{
+    //         console.log('files',file);
+            
+    //         const res = await this.cloudinary.saveToCloudinary(file)
+    //         console.log('hgh',res)
+    //     })
+    // );
+    // console.log('up',uploadBanners)
+    //         // const imageLink = await this.cloudinary.saveToCloudinary(image)
+    //         // console.log(imageLink);
+
+    //         const saveBanner = await this.adminutilsRepository.addBanner(uploadBanners)
+    //         return {
+    //             status:200,
+    //         data:saveBanner
+    //         }
+            
+    //     } catch (error) {
+    //         console.log(error);
+            
+    //     }
+    // }
 
     async getBanners(){
         try {
